@@ -56,6 +56,10 @@ class LLMAgent(Agent):
         self.temperature = 0.7
         self.api_key = os.getenv("OPENROUTER_API_KEY")
         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
+        self.api_error_log_path = None
+        experiment_path = os.getenv("EXPERIMENT_PATH")
+        if experiment_path:
+            self.api_error_log_path = os.path.join(experiment_path, "api-errors.jsonl")
         self.summarization = "No thought process has been made."
         self.processed_memory = "No memory has been processed."
         self.chat_history = []
@@ -64,6 +68,24 @@ class LLMAgent(Agent):
         self.log_path = os.getenv("EXPERIMENT_PATH") + "/agent-logs.json"
         self.compact_log_path = os.getenv("EXPERIMENT_PATH") + "/agent-logs-compact.json"
         self.game_index = game_index
+
+    def log_api_error(self, error_type, details):
+        if not self.api_error_log_path:
+            return
+        try:
+            payload = {
+                "timestamp": str(datetime.now()),
+                "model": self.model,
+                "player": {"name": self.player.name, "identity": self.player.identity},
+                "error_type": error_type,
+                "details": details,
+            }
+            with open(self.api_error_log_path, "a") as f:
+                json.dump(payload, f, separators=(",", ": "))
+                f.write("\n")
+        except Exception:
+            # Never break the game loop due to logging issues.
+            pass
 
     def log_interaction(self, sysprompt, prompt, original_response, step):
         """
@@ -161,6 +183,9 @@ class LLMAgent(Agent):
 
     async def send_request(self, messages):
         """Send a POST request to OpenRouter API with the provided messages."""
+        if not self.api_key:
+            self.log_api_error("missing_api_key", "OPENROUTER_API_KEY is not set")
+            return 'SPEAK: ...'
         headers = {"Authorization": f"Bearer {self.api_key}"}
         payload = {
             "model": self.model,
@@ -178,18 +203,31 @@ class LLMAgent(Agent):
                 try:
                     async with session.post(self.api_url, headers=headers, data=json.dumps(payload)) as response:
                         if response is None:
+                            self.log_api_error("null_response", f"attempt={attempt + 1}")
                             print(f"API request failed: response is None for {self.model}.")
                             continue
                         if response.status == 200:
                             data = await response.json()
                             if "choices" not in data:
+                                self.log_api_error("missing_choices", f"attempt={attempt + 1}, response={data}")
                                 print(f"API request failed: 'choices' key not in response for {self.model}.")
                                 continue
                             if not data["choices"]:
+                                self.log_api_error("empty_choices", f"attempt={attempt + 1}, response={data}")
                                 print(f"API request failed: 'choices' key is empty in response for {self.model}.")
                                 continue
                             return data["choices"][0]["message"]["content"]
+                        else:
+                            try:
+                                body = await response.text()
+                            except Exception:
+                                body = "<unable to read response body>"
+                            self.log_api_error(
+                                "http_error",
+                                f"attempt={attempt + 1}, status={response.status}, body={body}",
+                            )
                 except Exception as e:
+                    self.log_api_error("exception", f"attempt={attempt + 1}, error={e}")
                     print(f"API request failed. Retrying... ({attempt + 1}/10) for {self.model}.")
                     continue
             return 'SPEAK: ...'
