@@ -1,0 +1,84 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #1f1f1f;
+}
+
+.container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 12px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.hidden {
+  display: none;
+}
+
+.muted {
+  color: #555555;
+  margin-top: 8px;
+}
+
+.error {
+  margin-top: 10px;
+  padding: 10px;
+  background: #ffe8e8;
+  border: 1px solid #cc0000;
+  color: #a30000;
+  border-radius: 6px;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.actions button {
+  text-align: left;
+  padding: 10px;
+}
+
+.speech {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.speech input {
+  width: 100%;
+  padding: 8px;
+}
+
+.log-output {
+  margin: 0;
+  max-height: 280px;
+  overflow: auto;
+  background: #fafafa;
+  border: 1px solid #dddddd;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+button {
+  cursor: pointer;
+}

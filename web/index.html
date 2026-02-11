@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AmongUs Web Client</title>
+    <link rel="stylesheet" href="/web/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>AmongUs Web Client</h1>
+
+      <section class="card">
+        <button id="create-game-btn" type="button">Create Game</button>
+        <div id="create-status" class="muted">No game created.</div>
+        <div id="error-banner" class="error hidden"></div>
+      </section>
+
+      <section id="game-view" class="card hidden">
+        <h2>Game Status</h2>
+        <div class="status-grid">
+          <div><strong>Game ID:</strong> <span id="game-id">-</span></div>
+          <div><strong>Status:</strong> <span id="status">-</span></div>
+          <div><strong>Phase:</strong> <span id="phase">-</span></div>
+          <div><strong>Timestep:</strong> <span id="timestep">-</span></div>
+          <div><strong>Current Player:</strong> <span id="current-player">-</span></div>
+          <div><strong>Turn:</strong> <span id="turn-state">-</span></div>
+        </div>
+      </section>
+
+      <section id="actions-view" class="card hidden">
+        <h2>Available Actions</h2>
+        <div id="waiting-message" class="muted">Waiting for game state...</div>
+        <div id="actions" class="actions"></div>
+
+        <div id="speech-box" class="speech hidden">
+          <label for="speech-text"><strong>Speech Text</strong></label>
+          <input
+            id="speech-text"
+            type="text"
+            placeholder="Enter message for SPEAK action"
+            autocomplete="off"
+          />
+          <button id="submit-speech-btn" type="button">Submit Action</button>
+        </div>
+      </section>
+
+      <section id="log-view" class="card hidden">
+        <h2>Latest Backend Log</h2>
+        <pre id="latest-log" class="log-output">No data yet.</pre>
+      </section>
+    </main>
+
+    <script src="/web/app.js"></script>
+  </body>
+</html>
