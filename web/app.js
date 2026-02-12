@@ -7,13 +7,18 @@
 */
 
 let gameId = null;
+let previousState = null;
 let pollTimer = null;
 let pollInFlight = false;
 let actionSubmitInFlight = false;
 let selectedAction = null;
 let lastIsHumanTurn = null;
 let lastActionSignature = "";
-let lastLogPayload = "";
+let lastActiveRoom = null;
+const seenMeetingMessages = new Set();
+const playerState = new Map();
+const playerTokenEls = new Map();
+const roomPlayerContainers = new Map();
 
 const ROOM_ORDER = [
   "Cafeteria",
@@ -48,9 +53,6 @@ const COLOR_MAP = {
   lime: "#88ff66",
 };
 
-const playerState = new Map();
-const roomPlayerContainers = new Map();
-
 const createGameBtn = document.getElementById("create-game-btn");
 const createStatus = document.getElementById("create-status");
 const errorBanner = document.getElementById("error-banner");
@@ -72,10 +74,14 @@ const speechBox = document.getElementById("speech-box");
 const speechTextInput = document.getElementById("speech-text");
 const submitSpeechBtn = document.getElementById("submit-speech-btn");
 
+const meetingPanel = document.getElementById("meeting-panel");
+const meetingFeed = document.getElementById("meeting-feed");
+const taskFeed = document.getElementById("task-feed");
+const seenTaskEvents = new Set();
+
 function initMapSkeleton() {
   mapGrid.innerHTML = "";
   roomPlayerContainers.clear();
-
   ROOM_ORDER.forEach((roomName) => {
     const roomEl = document.createElement("div");
     roomEl.className = "room";
@@ -87,7 +93,6 @@ function initMapSkeleton() {
 
     const playersEl = document.createElement("div");
     playersEl.className = "room-players";
-    playersEl.id = `room-${roomName.replace(/\s+/g, "-").toLowerCase()}`;
 
     roomEl.appendChild(titleEl);
     roomEl.appendChild(playersEl);
@@ -121,7 +126,6 @@ async function fetchJson(url, options = {}) {
   const response = await fetch(url, options);
   const raw = await response.text();
   let payload = {};
-
   if (raw) {
     try {
       payload = JSON.parse(raw);
@@ -129,7 +133,6 @@ async function fetchJson(url, options = {}) {
       payload = { detail: raw };
     }
   }
-
   if (!response.ok) {
     const detail = payload && payload.detail ? payload.detail : `HTTP ${response.status}`;
     throw new Error(detail);
@@ -160,6 +163,10 @@ function buildActionSignature(actions) {
     .join("||");
 }
 
+function isMeetingPhase(phase) {
+  return String(phase || "").toLowerCase().includes("meeting");
+}
+
 function canonicalRoomName(roomName) {
   const normalized = String(roomName || "").trim().toLowerCase();
   if (!normalized) {
@@ -167,19 +174,6 @@ function canonicalRoomName(roomName) {
   }
   const match = ROOM_ORDER.find((room) => room.toLowerCase() === normalized);
   return match || "Unknown";
-}
-
-function ensurePlayerRecord(playerName) {
-  if (!playerState.has(playerName)) {
-    playerState.set(playerName, {
-      name: playerName,
-      room: "Unknown",
-      colorName: "white",
-      isHuman: false,
-      isDead: false,
-    });
-  }
-  return playerState.get(playerName);
 }
 
 function parseColorName(playerName) {
@@ -200,34 +194,125 @@ function parsePlayersLine(value) {
     .filter((entry) => entry.length > 0);
 }
 
-function updatePlayersFromInfo(playerInfo, humanPlayerName) {
-  if (!playerInfo) {
+function ensurePlayerRecord(playerName) {
+  if (!playerState.has(playerName)) {
+    playerState.set(playerName, {
+      name: playerName,
+      room: "Unknown",
+      colorName: parseColorName(playerName),
+      isHuman: false,
+      isDead: false,
+    });
+  }
+  return playerState.get(playerName);
+}
+
+function buildPositionMapFromSnapshot(state) {
+  const positionMap = new Map();
+  const positions = Array.isArray(state.player_positions) ? state.player_positions : [];
+  positions.forEach((entry) => {
+    if (!entry || !entry.name) {
+      return;
+    }
+    positionMap.set(entry.name, {
+      room: canonicalRoomName(entry.room),
+      colorName: String(entry.color || parseColorName(entry.name)).toLowerCase(),
+      isAlive: entry.is_alive !== false,
+    });
+  });
+  return positionMap;
+}
+
+function ensureTokenEl(playerName) {
+  if (playerTokenEls.has(playerName)) {
+    return playerTokenEls.get(playerName);
+  }
+  const record = ensurePlayerRecord(playerName);
+  const token = document.createElement("div");
+  token.className = "player-token";
+  token.dataset.player = playerName;
+  token.title = record.name;
+  const numberMatch = record.name.match(/Player\s+(\d+)/i);
+  token.textContent = numberMatch ? `P${numberMatch[1]}` : "P";
+  playerTokenEls.set(playerName, token);
+  return token;
+}
+
+function setHumanTag(token, isHuman) {
+  token.classList.toggle("human", isHuman);
+  const existing = token.querySelector(".you-tag");
+  if (isHuman && !existing) {
+    const youTag = document.createElement("span");
+    youTag.className = "you-tag";
+    youTag.textContent = "YOU";
+    token.appendChild(youTag);
+  }
+  if (!isHuman && existing) {
+    existing.remove();
+  }
+}
+
+function styleToken(token, record) {
+  token.style.background = COLOR_MAP[record.colorName] || "#f3f6fb";
+  token.style.opacity = record.isDead ? "0.45" : "1";
+  token.title = record.name;
+  setHumanTag(token, record.isHuman);
+}
+
+function moveTokenToRoom(playerName, roomName) {
+  const token = ensureTokenEl(playerName);
+  const targetRoom = canonicalRoomName(roomName);
+  const container = roomPlayerContainers.get(targetRoom);
+  if (!container) {
+    return;
+  }
+  if (token.parentElement !== container) {
+    container.appendChild(token);
+    token.classList.add("moving");
+    window.setTimeout(() => token.classList.remove("moving"), 230);
+  }
+}
+
+function snapshotPositions() {
+  const positions = {};
+  playerState.forEach((record, name) => {
+    positions[name] = record.room;
+  });
+  return positions;
+}
+
+function extractKnownPositionsFromInfo(state) {
+  const info = String(state.player_info || "");
+  if (!info) {
     return;
   }
 
-  // Players in room snapshots.
+  const roomOccupants = new Map();
   const roomLinePattern = /Players in ([^:]+):\s*([^\n]+)/g;
   let roomMatch;
-  while ((roomMatch = roomLinePattern.exec(playerInfo)) !== null) {
+  while ((roomMatch = roomLinePattern.exec(info)) !== null) {
     const room = canonicalRoomName(roomMatch[1]);
     const players = parsePlayersLine(roomMatch[2]);
+    const occupantSet = new Set();
     players.forEach((rawName) => {
       const isDead = rawName.includes("(dead)");
       const cleanName = rawName.replace(/\s*\(dead\)\s*/g, "").trim();
       if (!cleanName) {
         return;
       }
+      occupantSet.add(cleanName);
       const record = ensurePlayerRecord(cleanName);
       record.room = room;
       record.isDead = isDead;
       record.colorName = parseColorName(cleanName);
     });
+    roomOccupants.set(room, occupantSet);
   }
 
-  // Move observations.
+  // Handle observed moves.
   const movePattern = /(Player \d+: [^\n]+?) MOVE from ([A-Za-z ]+) to ([A-Za-z ]+)/g;
   let moveMatch;
-  while ((moveMatch = movePattern.exec(playerInfo)) !== null) {
+  while ((moveMatch = movePattern.exec(info)) !== null) {
     const playerName = moveMatch[1].trim();
     const destinationRoom = canonicalRoomName(moveMatch[3]);
     const record = ensurePlayerRecord(playerName);
@@ -235,102 +320,122 @@ function updatePlayersFromInfo(playerInfo, humanPlayerName) {
     record.colorName = parseColorName(playerName);
   }
 
-  // Human location snapshot if available.
-  const locationMatch = playerInfo.match(/Current Location:\s*([^\n]+)/);
-  if (humanPlayerName && locationMatch) {
-    const record = ensurePlayerRecord(humanPlayerName);
+  // Human location snapshot.
+  const locationMatch = info.match(/Current Location:\s*([^\n]+)/);
+  if (state.human_player_name && locationMatch) {
+    const record = ensurePlayerRecord(state.human_player_name);
     record.room = canonicalRoomName(locationMatch[1]);
-    record.colorName = parseColorName(humanPlayerName);
+    record.colorName = parseColorName(state.human_player_name);
   }
-}
 
-function renderPlayersToMap(currentPlayerName) {
-  roomPlayerContainers.forEach((container, roomName) => {
-    container.innerHTML = "";
-    const roomEl = container.parentElement;
-    roomEl.classList.toggle("active", false);
-    if (currentPlayerName) {
-      const current = playerState.get(currentPlayerName);
-      if (current && current.room === roomName) {
-        roomEl.classList.toggle("active", true);
+  // Immediate leave/enter detection for currently visible room lists.
+  roomOccupants.forEach((occupants, room) => {
+    playerState.forEach((record) => {
+      if (record.room === room && !occupants.has(record.name)) {
+        record.room = "Unknown";
       }
-    }
-  });
-
-  const grouped = new Map();
-  ROOM_ORDER.forEach((room) => grouped.set(room, []));
-
-  playerState.forEach((record) => {
-    const room = canonicalRoomName(record.room);
-    grouped.get(room).push(record);
-  });
-
-  grouped.forEach((players, room) => {
-    const container = roomPlayerContainers.get(room);
-    if (!container) {
-      return;
-    }
-    players.sort((a, b) => a.name.localeCompare(b.name));
-    players.forEach((record) => {
-      const token = document.createElement("div");
-      token.className = `player-token${record.isHuman ? " human" : ""}`;
-      token.title = record.name;
-      token.style.background = COLOR_MAP[record.colorName] || "#f3f6fb";
-      token.style.opacity = record.isDead ? "0.45" : "1";
-
-      const numberMatch = record.name.match(/Player\s+(\d+)/i);
-      token.textContent = numberMatch ? `P${numberMatch[1]}` : "P";
-
-      if (record.isHuman) {
-        const youTag = document.createElement("span");
-        youTag.className = "you-tag";
-        youTag.textContent = "YOU";
-        token.appendChild(youTag);
-      }
-      container.appendChild(token);
     });
   });
 }
 
-function updateMap(state) {
-  const humanName = state.human_player_name || null;
+function updateMap(previous, current) {
+  const oldPositions = snapshotPositions();
+  const previousPositionMap = previous ? buildPositionMapFromSnapshot(previous) : new Map();
+  const currentPositionMap = buildPositionMapFromSnapshot(current);
+
   playerState.forEach((record) => {
     record.isHuman = false;
   });
-  if (humanName) {
-    ensurePlayerRecord(humanName).isHuman = true;
+  if (current.human_player_name) {
+    ensurePlayerRecord(current.human_player_name).isHuman = true;
+  }
+  if (current.current_player) {
+    ensurePlayerRecord(current.current_player);
   }
 
-  updatePlayersFromInfo(state.player_info || "", humanName);
-  if (state.current_player) {
-    ensurePlayerRecord(state.current_player);
+  if (currentPositionMap.size > 0) {
+    currentPositionMap.forEach((position, playerName) => {
+      const record = ensurePlayerRecord(playerName);
+      record.room = position.room;
+      record.colorName = position.colorName;
+      record.isDead = !position.isAlive;
+    });
+  } else {
+    // Fallback for older snapshots with no explicit positions.
+    extractKnownPositionsFromInfo(current);
   }
-  renderPlayersToMap(state.current_player || null);
+
+  const movedPlayers = new Set();
+  if (currentPositionMap.size > 0) {
+    currentPositionMap.forEach((position, playerName) => {
+      const oldRoom = previousPositionMap.has(playerName)
+        ? previousPositionMap.get(playerName).room
+        : oldPositions[playerName] || "Unknown";
+      if (oldRoom !== position.room) {
+        movedPlayers.add(playerName);
+      }
+    });
+  } else {
+    Object.keys(oldPositions).forEach((playerName) => {
+      const record = playerState.get(playerName);
+      if (!record) {
+        return;
+      }
+      if (oldPositions[playerName] !== canonicalRoomName(record.room)) {
+        movedPlayers.add(playerName);
+      }
+    });
+  }
+
+  playerState.forEach((record, playerName) => {
+    const newRoom = canonicalRoomName(record.room);
+    if (movedPlayers.has(playerName) || !playerTokenEls.has(playerName) || !previous) {
+      moveTokenToRoom(playerName, newRoom);
+    }
+    styleToken(ensureTokenEl(playerName), record);
+  });
+
+  // Room highlighting for current player.
+  if (lastActiveRoom) {
+    const prevRoomContainer = roomPlayerContainers.get(lastActiveRoom);
+    if (prevRoomContainer) {
+      prevRoomContainer.parentElement.classList.remove("active");
+    }
+  }
+  let activeRoom = null;
+  if (current.current_player && playerState.has(current.current_player)) {
+    activeRoom = canonicalRoomName(playerState.get(current.current_player).room);
+    const currentContainer = roomPlayerContainers.get(activeRoom);
+    if (currentContainer) {
+      currentContainer.parentElement.classList.add("active");
+    }
+  }
+  lastActiveRoom = activeRoom;
 }
 
-function renderActionButtons(state) {
-  const actions = Array.isArray(state.available_actions) ? state.available_actions : [];
+function renderActionButtons(current) {
+  const actions = Array.isArray(current.available_actions) ? current.available_actions : [];
   const actionSignature = buildActionSignature(actions);
-  const turnChanged = lastIsHumanTurn !== state.is_human_turn;
+  const turnChanged = lastIsHumanTurn !== current.is_human_turn;
   const actionListChanged = lastActionSignature !== actionSignature;
   const shouldRerender = turnChanged || actionListChanged;
 
   if (!shouldRerender) {
-    if (!state.is_human_turn) {
+    if (!current.is_human_turn) {
       waitingMessageEl.textContent = "Waiting for your turn...";
     } else if (speechBox.classList.contains("hidden")) {
       waitingMessageEl.textContent = "Your turn. Choose an action.";
     }
-    setActionButtonsEnabled(state.is_human_turn && !actionSubmitInFlight);
+    setActionButtonsEnabled(current.is_human_turn && !actionSubmitInFlight);
     return;
   }
 
   clearActionButtons();
   hideSpeechInput();
 
-  if (!state.is_human_turn) {
+  if (!current.is_human_turn) {
     waitingMessageEl.textContent = "Waiting for your turn...";
-    lastIsHumanTurn = state.is_human_turn;
+    lastIsHumanTurn = current.is_human_turn;
     lastActionSignature = actionSignature;
     return;
   }
@@ -338,7 +443,7 @@ function renderActionButtons(state) {
   waitingMessageEl.textContent = "Your turn. Choose an action.";
   if (actions.length === 0) {
     waitingMessageEl.textContent = "Your turn, but no available actions were provided.";
-    lastIsHumanTurn = state.is_human_turn;
+    lastIsHumanTurn = current.is_human_turn;
     lastActionSignature = actionSignature;
     return;
   }
@@ -347,7 +452,7 @@ function renderActionButtons(state) {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = action.name;
-    button.disabled = actionSubmitInFlight || !state.is_human_turn;
+    button.disabled = actionSubmitInFlight || !current.is_human_turn;
     button.addEventListener("click", async () => {
       if (actionSubmitInFlight) {
         return;
@@ -364,66 +469,208 @@ function renderActionButtons(state) {
     actionsEl.appendChild(button);
   });
 
-  lastIsHumanTurn = state.is_human_turn;
+  lastIsHumanTurn = current.is_human_turn;
   lastActionSignature = actionSignature;
 }
 
-function updateSidebar(state) {
-  gameIdEl.textContent = String(gameId ?? "-");
-  statusEl.textContent = String(state.status ?? "-");
-  phaseEl.textContent = String(state.current_phase ?? "-");
-  timestepEl.textContent = String(state.timestep ?? "-");
-  currentPlayerEl.textContent = String(state.current_player ?? "-");
-  turnStateEl.textContent = state.is_human_turn ? "Human turn" : "Waiting";
-  renderActionButtons(state);
+function updateSidebar(previous, current) {
+  renderActionButtons(current);
 }
 
-function updateLog(state) {
-  const payload =
-    state.player_info && String(state.player_info).trim().length > 0
-      ? state.player_info
-      : JSON.stringify(
-          {
-            status: state.status,
-            current_phase: state.current_phase,
-            timestep: state.timestep,
-            current_player: state.current_player,
-            is_human_turn: state.is_human_turn,
-            winner: state.winner ?? null,
-            winner_reason: state.winner_reason ?? null,
-          },
-          null,
-          2
-        );
+function updateStatus(previous, current) {
+  gameIdEl.textContent = String(gameId ?? "-");
+  statusEl.textContent = String(current.status ?? "-");
+  phaseEl.textContent = String(current.current_phase ?? "-");
+  timestepEl.textContent = String(current.timestep ?? "-");
+  currentPlayerEl.textContent = String(current.current_player ?? "-");
+  turnStateEl.textContent = current.is_human_turn ? "Human turn" : "Waiting";
+}
 
-  if (payload === lastLogPayload) {
+function extractNewLogLines(previousInfo, currentInfo) {
+  const prevLines = new Set(
+    String(previousInfo || "")
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0)
+  );
+  return String(currentInfo || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !prevLines.has(line));
+}
+
+function updateLog(previous, current) {
+  const currentInfo = current.player_info || "";
+  if (!currentInfo) {
     return;
   }
-  lastLogPayload = payload;
-
-  const stamp = `[T${state.timestep ?? "?"}] [${state.current_phase ?? "unknown"}]`;
+  const prevInfo = previous ? previous.player_info || "" : "";
+  const newLines = previous ? extractNewLogLines(prevInfo, currentInfo) : currentInfo.split("\n");
+  const filtered = newLines.filter((line) => line.trim().length > 0);
+  if (filtered.length === 0) {
+    return;
+  }
+  const stamp = `[T${current.timestep ?? "?"}] [${current.current_phase ?? "unknown"}]`;
   if (latestLogEl.textContent === "No data yet.") {
-    latestLogEl.textContent = `${stamp}\n${payload}`;
+    latestLogEl.textContent = `${stamp}\n${filtered.join("\n")}`;
   } else {
-    latestLogEl.textContent += `\n\n${stamp}\n${payload}`;
+    latestLogEl.textContent += `\n\n${stamp}\n${filtered.join("\n")}`;
   }
   latestLogEl.scrollTop = latestLogEl.scrollHeight;
 }
 
-function renderState(state) {
+function parseMeetingMessages(playerInfo) {
+  const lines = String(playerInfo || "").split("\n");
+  const messages = [];
+  const pattern =
+    /(?:Timestep\s+(\d+):\s*)?\[(meeting[^\]]*)\]\s*(Player\s+\d+:\s*[^\s]+)\s+SPEAK\s*:?\s*(.*)$/i;
+  lines.forEach((line) => {
+    const text = line.trim();
+    const match = text.match(pattern);
+    if (!match) {
+      return;
+    }
+    messages.push({
+      timestep: match[1] || "",
+      phase: match[2] || "meeting",
+      player: match[3].trim(),
+      text: match[4].trim() || "...",
+    });
+  });
+  return messages;
+}
+
+function appendMeetingMessage(message, isHuman) {
+  const groupId = `group-${message.player.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9:-]/g, "")}`;
+  let group = meetingFeed.querySelector(`[data-group-id="${groupId}"]`);
+  if (!group) {
+    group = document.createElement("div");
+    group.className = `meeting-group${isHuman ? " human" : ""}`;
+    group.dataset.groupId = groupId;
+
+    const speaker = document.createElement("div");
+    speaker.className = "speaker";
+    speaker.textContent = message.player;
+    group.appendChild(speaker);
+    meetingFeed.appendChild(group);
+  }
+
+  const msgEl = document.createElement("div");
+  msgEl.className = "meeting-msg";
+  msgEl.textContent = message.timestep
+    ? `T${message.timestep}: ${message.text}`
+    : message.text;
+  group.appendChild(msgEl);
+}
+
+function updateMeetingPanel(previous, current) {
+  const meeting = isMeetingPhase(current.current_phase);
+  meetingPanel.classList.toggle("hidden", !meeting);
+  if (!meeting) {
+    return;
+  }
+
+  let messages = [];
+  if (Array.isArray(current.meeting_messages) && current.meeting_messages.length > 0) {
+    messages = current.meeting_messages.map((entry) => ({
+      timestep: entry.timestep ?? "",
+      phase: "meeting",
+      player: entry.player,
+      text: entry.text,
+    }));
+  } else {
+    messages = parseMeetingMessages(current.player_info || "");
+  }
+  messages.forEach((message) => {
+    const key = `${message.timestep}|${message.player}|${message.text}`;
+    if (seenMeetingMessages.has(key)) {
+      return;
+    }
+    seenMeetingMessages.add(key);
+    appendMeetingMessage(message, message.player === current.human_player_name);
+  });
+
+  if (messages.length > 0) {
+    meetingFeed.scrollTo({ top: meetingFeed.scrollHeight, behavior: "smooth" });
+  }
+}
+
+function parseTaskEventLine(line, current) {
+  const observerPattern = /Timestep\s+(\d+):\s*\[task\]\s*(Player\s+\d+:\s*[^\s]+)\s+Seemingly doing task/i;
+  const selfPattern = /Timestep\s+(\d+):\s*\[task phase\]\s*Seemingly doing task/i;
+
+  const observerMatch = line.match(observerPattern);
+  if (observerMatch) {
+    return {
+      key: `${observerMatch[1]}|${observerMatch[2]}|seemingly-doing-task`,
+      text: `T${observerMatch[1]}: ${observerMatch[2]} seemingly doing task`,
+    };
+  }
+
+  const selfMatch = line.match(selfPattern);
+  if (selfMatch) {
+    const playerName = current.current_player || "Unknown player";
+    return {
+      key: `${selfMatch[1]}|${playerName}|seemingly-doing-task`,
+      text: `T${selfMatch[1]}: ${playerName} seemingly doing task`,
+    };
+  }
+
+  return null;
+}
+
+function appendTaskEvent(text) {
+  if (taskFeed.textContent.trim() === "No task actions yet.") {
+    taskFeed.textContent = "";
+  }
+  const item = document.createElement("div");
+  item.className = "task-event";
+  item.textContent = text;
+  taskFeed.appendChild(item);
+}
+
+function updateTaskFeed(previous, current) {
+  const currentInfo = current.player_info || "";
+  if (!currentInfo) {
+    return;
+  }
+  const prevInfo = previous ? previous.player_info || "" : "";
+  const newLines = previous ? extractNewLogLines(prevInfo, currentInfo) : currentInfo.split("\n");
+  newLines.forEach((rawLine) => {
+    const line = String(rawLine || "").trim();
+    if (!line.includes("Seemingly doing task")) {
+      return;
+    }
+    const event = parseTaskEventLine(line, current);
+    if (!event || seenTaskEvents.has(event.key)) {
+      return;
+    }
+    seenTaskEvents.add(event.key);
+    appendTaskEvent(event.text);
+  });
+  if (taskFeed.children.length > 0) {
+    taskFeed.scrollTop = taskFeed.scrollHeight;
+  }
+}
+
+function renderState(current) {
   gameView.classList.remove("hidden");
   logView.classList.remove("hidden");
-  updateMap(state);
-  updateSidebar(state);
-  updateLog(state);
 
-  if (state.status !== "running") {
+  updateMap(previousState, current);
+  updateStatus(previousState, current);
+  updateSidebar(previousState, current);
+  updateMeetingPanel(previousState, current);
+  updateTaskFeed(previousState, current);
+  updateLog(previousState, current);
+
+  if (current.status !== "running") {
     stopPolling();
     hideSpeechInput();
     setActionButtonsEnabled(false);
     waitingMessageEl.textContent = "Game finished.";
     appendStatusLine(
-      `Game ${gameId} finished. Winner: ${state.winner ?? "n/a"} | Reason: ${state.winner_reason ?? "n/a"}`
+      `Game ${gameId} finished. Winner: ${current.winner ?? "n/a"} | Reason: ${current.winner_reason ?? "n/a"}`
     );
   }
 }
@@ -445,6 +692,11 @@ async function createGame() {
     }
 
     gameId = response.game_id;
+    previousState = null;
+    seenMeetingMessages.clear();
+    meetingFeed.innerHTML = "";
+    seenTaskEvents.clear();
+    taskFeed.textContent = "No task actions yet.";
     appendStatusLine(`Game created (game_id=${gameId}). Polling state...`);
     await pollGameState();
     pollTimer = setInterval(pollGameState, 1000);
@@ -463,8 +715,9 @@ async function pollGameState() {
   pollInFlight = true;
   clearError();
   try {
-    const state = await fetchJson(`/game_state?game_id=${encodeURIComponent(gameId)}`);
-    renderState(state);
+    const current = await fetchJson(`/game_state?game_id=${encodeURIComponent(gameId)}`);
+    renderState(current);
+    previousState = current;
   } catch (error) {
     showError(`Polling failed: ${error.message}`);
     appendStatusLine("Polling stopped due to error.");
@@ -487,7 +740,7 @@ async function submitAction(actionIndex, speechText) {
   clearError();
   setActionButtonsEnabled(false);
 
-  // Keep this behavior unchanged: clear actions immediately after submit.
+  // Keep existing behavior unchanged: clear actions immediately after submit.
   clearActionButtons();
   hideSpeechInput();
   lastIsHumanTurn = null;

@@ -1,11 +1,12 @@
 import asyncio
 import datetime
 import os
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
 
@@ -167,6 +168,49 @@ class GameManager:
 
             return game_id
 
+    def _serialize_player_positions(self, game: AmongUs) -> List[Dict[str, Any]]:
+        positions: List[Dict[str, Any]] = []
+        for player in getattr(game, "players", []) or []:
+            positions.append(
+                {
+                    "name": player.name,
+                    "room": player.location,
+                    "color": player.color,
+                    "is_alive": bool(player.is_alive),
+                }
+            )
+        return positions
+
+    def _serialize_meeting_messages(self, game: AmongUs) -> List[Dict[str, Any]]:
+        messages: List[Dict[str, Any]] = []
+        for entry in getattr(game, "activity_log", []) or []:
+            if entry.get("phase") != "meeting":
+                continue
+            player_obj = entry.get("player")
+            action = entry.get("action")
+            if player_obj is None or action is None:
+                continue
+            action_text = str(action)
+            if not action_text.startswith("SPEAK"):
+                continue
+            message_match = re.match(r"^SPEAK\s*:?\s*(.*)$", action_text, flags=re.IGNORECASE | re.DOTALL)
+            message_text = message_match.group(1).strip() if message_match else action_text
+            if not message_text:
+                message_text = "..."
+            round_number = entry.get("round")
+            timestep = entry.get("timestep")
+            message_id = f"{timestep}:{round_number}:{player_obj.name}:{message_text}"
+            messages.append(
+                {
+                    "id": message_id,
+                    "timestep": timestep,
+                    "round": round_number,
+                    "player": player_obj.name,
+                    "text": message_text,
+                }
+            )
+        return messages
+
     def get_state(self, game_id: int) -> Dict[str, Any]:
         record = self._records.get(game_id)
         if record is None:
@@ -199,6 +243,15 @@ class GameManager:
                         "requires_message": bool(action.get("requires_message", False)),
                     }
                 )
+        elif current_agent is not None and getattr(current_agent, "player", None) is not None:
+            # Keep player_info live between human turns for UI reactivity.
+            try:
+                player_info = current_agent.player.all_info_prompt()
+            except Exception:
+                player_info = None
+
+        player_positions = self._serialize_player_positions(game)
+        meeting_messages = self._serialize_meeting_messages(game)
 
         return {
             "game_id": game_id,
@@ -217,6 +270,8 @@ class GameManager:
             "current_step": current_step,
             "player_info": player_info,
             "available_actions": available_actions,
+            "player_positions": player_positions,
+            "meeting_messages": meeting_messages,
         }
 
     def submit_human_action(self, game_id: int, action_index: int, speech_text: Optional[str]) -> None:

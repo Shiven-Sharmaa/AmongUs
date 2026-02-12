@@ -282,12 +282,14 @@ class LLMAgent(Agent):
         for action in available_actions:
             if repr(action) in output_action:
                 return action
-            elif "SPEAK: " in repr(action) and "SPEAK: " in output_action:
-                message = output_action.split("SPEAK: ")[1]
-                action.message = message
-                return action
-            else:
-                action.message = '...'
+            elif "SPEAK: " in repr(action):
+                # Be tolerant to both "SPEAK: <msg>" and "SPEAK <msg>" outputs.
+                speak_match = re.search(r"\bSPEAK\b\s*:?\s*(.*)$", output_action, flags=re.IGNORECASE | re.DOTALL)
+                if speak_match:
+                    message = speak_match.group(1).strip().strip('"').strip("'")
+                    action.message = message if message else "..."
+                    return action
+                action.message = "..."
         return action
 
     def choose_observation_location(self, map):
