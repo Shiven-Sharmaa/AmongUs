@@ -406,6 +406,8 @@ async function fetchJson(url, options = {}) {
   if (API_AUTH_KEY) {
     headers.set("X-API-Key", API_AUTH_KEY);
   }
+  // Bypass ngrok's free-tier browser interstitial page
+  headers.set("ngrok-skip-browser-warning", "1");
   requestOptions.headers = headers;
 
   const response = await fetch(url, requestOptions);
