@@ -174,3 +174,6 @@ flask==3.1.0
 websockets==15.0.1
 passlib==1.7.4
 streamlit==1.44.1
+fastapi==0.115.12
+uvicorn[standard]==0.34.0
+pydantic==2.10.6

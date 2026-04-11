@@ -91,9 +91,14 @@ class AmongUs:
         self.turn_counter = 0
         self.event_counter = 0
         self.meeting_counter = 0
+        # Snapshot logging paths at construction time so concurrent games don't
+        # clobber each other's logs when the global env vars are overwritten.
+        self.experiment_path = os.getenv("EXPERIMENT_PATH", "")
+        self.experiment_name = os.getenv("EXPERIMENT_NAME", "")
+        self._structured_v1_path = os.getenv("EXPERIMENT_PATH_STRUCTURED_V1", "")
 
     def _append_structured_record(self, filename: str, payload: dict):
-        structured_dir = os.getenv("EXPERIMENT_PATH_STRUCTURED_V1")
+        structured_dir = self._structured_v1_path
         if not structured_dir:
             return
         try:
@@ -340,7 +345,7 @@ class AmongUs:
         self.summary_json[f"Game {self.game_index}"]["winner"] = winner
         self.summary_json[f"Game {self.game_index}"]["winner_reason"] = winner_reason_map[winner]
         # finally, append the summary json to the experiment path as a single line json
-        summary_path = os.path.join(os.environ["EXPERIMENT_PATH"], "summary.json")
+        summary_path = os.path.join(self.experiment_path, "summary.json")
         with open(summary_path, "a") as f:
             json.dump(self.summary_json, f, separators=(",", ": "))
             f.write("\n")
@@ -350,7 +355,7 @@ class AmongUs:
             {
                 "schema_version": "v1",
                 "timestamp": datetime.utcnow().isoformat() + "Z",
-                "run_id": os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", ""))),
+                "run_id": self.experiment_name or os.path.basename(self.experiment_path),
                 "game_index": self.game_index,
                 "winner": winner,
                 "winner_reason": winner_reason_map[winner],
@@ -549,7 +554,7 @@ class AmongUs:
             print("== No one was voted out ==")
         self.important_activity_log.append(import_event)
         self.event_counter += 1
-        game_id = f"{os.getenv('EXPERIMENT_NAME', os.path.basename(os.getenv('EXPERIMENT_PATH', '')))}:game:{self.game_index}"
+        game_id = f"{self.experiment_name or os.path.basename(self.experiment_path)}:game:{self.game_index}"
         round_id = f"{game_id}:meeting:{self.meeting_counter}:round:{round}"
         self._append_structured_record(
             "events_v1.jsonl",
@@ -557,7 +562,7 @@ class AmongUs:
                 "schema_version": "v1",
                 "rubric_version": "deception-v1",
                 "timestamp": datetime.utcnow().isoformat() + "Z",
-                "run_id": os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", ""))),
+                "run_id": self.experiment_name or os.path.basename(self.experiment_path),
                 "game_index": self.game_index,
                 "game_id": game_id,
                 "event_id": f"{game_id}:event:{self.event_counter}",
@@ -631,7 +636,7 @@ class AmongUs:
             action_text = str(action)
 
         self.event_counter += 1
-        game_id = f"{os.getenv('EXPERIMENT_NAME', os.path.basename(os.getenv('EXPERIMENT_PATH', '')))}:game:{self.game_index}"
+        game_id = f"{self.experiment_name or os.path.basename(self.experiment_path)}:game:{self.game_index}"
         round_id = (
             f"{game_id}:meeting:{self.meeting_counter}:round:{record.get('round')}"
             if record.get("phase") == "meeting"
@@ -649,7 +654,7 @@ class AmongUs:
             "schema_version": "v1",
             "rubric_version": "deception-v1",
             "timestamp": datetime.utcnow().isoformat() + "Z",
-            "run_id": os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", ""))),
+            "run_id": self.experiment_name or os.path.basename(self.experiment_path),
             "game_index": self.game_index,
             "game_id": game_id,
             "event_id": f"{game_id}:event:{self.event_counter}",

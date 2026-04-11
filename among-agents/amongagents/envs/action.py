@@ -198,11 +198,9 @@ class ViewMonitor(Action):
         # TODO: Implement this
 
     def can_execute_actions(env, player):
-        available_tasks = []
-        if player.location == "Security":
+        if env.current_phase == "task" and player.location == "Security":
             return [ViewMonitor("Security")]
-        else:
-            return []
+        return []
 
 
 class CompleteTask(Action):

@@ -152,6 +152,7 @@ const globalTaskProgressFillEl = document.getElementById("global-task-progress-f
 const seenTaskEvents = new Set();
 const PLAYER_NOTES_STORAGE_KEY = "amongus_player_notes";
 const API_BASE_STORAGE_KEY = "amongus_api_base_url";
+const API_AUTH_STORAGE_KEY = "amongus_api_auth_key";
 const SOUND_ENABLED_KEY = "amongus_sound_enabled";
 const SOUND_VOLUME_KEY = "amongus_sound_volume";
 
@@ -161,11 +162,21 @@ const API_BASE_URL = (() => {
   if (queryApiBase) {
     window.localStorage.setItem(API_BASE_STORAGE_KEY, queryApiBase);
   }
-  const hasConfiguredApiBase = Object.prototype.hasOwnProperty.call(window, "API_BASE_URL");
   const configured = String(window.API_BASE_URL || "").trim();
   const persisted = String(window.localStorage.getItem(API_BASE_STORAGE_KEY) || "").trim();
-  const raw = hasConfiguredApiBase ? configured : (queryApiBase || persisted || "");
+  const raw = queryApiBase || configured || persisted || "";
   return raw.replace(/\/+$/, "");
+})();
+
+const API_AUTH_KEY = (() => {
+  const params = new URLSearchParams(window.location.search);
+  const queryApiKey = (params.get("api_key") || "").trim();
+  if (queryApiKey) {
+    window.localStorage.setItem(API_AUTH_STORAGE_KEY, queryApiKey);
+  }
+  const configured = String(window.API_AUTH_KEY || "").trim();
+  const persisted = String(window.localStorage.getItem(API_AUTH_STORAGE_KEY) || "").trim();
+  return queryApiKey || configured || persisted || "";
 })();
 
 function apiUrl(path) {
@@ -390,7 +401,14 @@ function appendStatusLine(text) {
 }
 
 async function fetchJson(url, options = {}) {
-  const response = await fetch(url, options);
+  const requestOptions = { ...options };
+  const headers = new Headers(options.headers || {});
+  if (API_AUTH_KEY) {
+    headers.set("X-API-Key", API_AUTH_KEY);
+  }
+  requestOptions.headers = headers;
+
+  const response = await fetch(url, requestOptions);
   const raw = await response.text();
   let payload = {};
   if (raw) {

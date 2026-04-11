@@ -68,6 +68,7 @@ class LLMAgent(Agent):
         self.api_error_log_path = None
         self.api_call_log_path = None
         self.structured_v1_path = os.getenv("EXPERIMENT_PATH_STRUCTURED_V1")
+        self.run_id = os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", "")))
         self.api_call_counter = 0
         experiment_path = os.getenv("EXPERIMENT_PATH")
         if experiment_path:
@@ -447,9 +448,9 @@ Crewmate-specific aggression directives:
                 "schema_version": "v1",
                 "rubric_version": "deception-v1",
                 "timestamp": str(datetime.now()),
-                "run_id": os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", ""))),
+                "run_id": self.run_id,
                 "game_index": self.game_index,
-                "game_id": f"{os.getenv('EXPERIMENT_NAME', os.path.basename(os.getenv('EXPERIMENT_PATH', '')))}:game:{self.game_index}",
+                "game_id": f"{self.run_id}:game:{self.game_index}",
                 "step": step,
                 "phase": phase,
                 "turn_id": f"{self.game_index}-t{step}-agent-{self.player.name}",
@@ -606,9 +607,9 @@ Crewmate-specific aggression directives:
                 "schema_version": "v1",
                 "rubric_version": "deception-v1",
                 "timestamp": str(datetime.now()),
-                "run_id": os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", ""))),
+                "run_id": self.run_id,
                 "game_index": self.game_index,
-                "game_id": f"{os.getenv('EXPERIMENT_NAME', os.path.basename(os.getenv('EXPERIMENT_PATH', '')))}:game:{self.game_index}",
+                "game_id": f"{self.run_id}:game:{self.game_index}",
                 "step": step,
                 "turn_id": f"{self.game_index}-t{step}-agent-{self.player.name}",
                 "utterance_id": f"{self.game_index}-t{step}-agent-{self.player.name}-utterance-1",
@@ -1040,6 +1041,7 @@ class HumanAgent(Agent):
         self.pending_monitor_room = ""
         self.known_impostor_teammates: List[str] = []
         self.structured_v1_path = os.getenv("EXPERIMENT_PATH_STRUCTURED_V1")
+        self.run_id = os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", "")))
 
     def _log_structured_record(self, filename: str, payload: Dict[str, Any]) -> None:
         if not self.structured_v1_path:
@@ -1369,9 +1371,9 @@ class HumanAgent(Agent):
                 "schema_version": "v1",
                 "rubric_version": "deception-v1",
                 "timestamp": str(datetime.now()),
-                "run_id": os.getenv("EXPERIMENT_NAME", os.path.basename(os.getenv("EXPERIMENT_PATH", ""))),
+                "run_id": self.run_id,
                 "game_index": self.game_index,
-                "game_id": f"{os.getenv('EXPERIMENT_NAME', os.path.basename(os.getenv('EXPERIMENT_PATH', '')))}:game:{self.game_index}",
+                "game_id": f"{self.run_id}:game:{self.game_index}",
                 "step": step,
                 "turn_id": f"{self.game_index}-t{step}-agent-{self.player.name}",
                 "utterance_id": f"{self.game_index}-t{step}-agent-{self.player.name}-utterance-1",

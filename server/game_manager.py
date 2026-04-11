@@ -31,10 +31,18 @@ class GameRecord:
     winner_reason: Optional[str] = None
 
 
+MAX_CONCURRENT_GAMES = 8
+
+
+class CapacityError(RuntimeError):
+    """Raised when the server has reached the maximum number of concurrent games."""
+
+
 class GameManager:
     def __init__(self) -> None:
-        # Force .env values to override inherited shell/session values so run configs are deterministic.
-        load_dotenv(ROOT_DIR / ".env", override=True)
+        # Keep deployed secret management authoritative (Fly secrets > local .env).
+        # Local .env values are loaded only for missing keys.
+        load_dotenv(ROOT_DIR / ".env", override=False)
         os.environ["FLASK_ENABLED"] = "True"
         self._records: Dict[int, GameRecord] = {}
         self._next_game_id = 1
@@ -122,6 +130,12 @@ class GameManager:
             )
 
         async with self._init_lock:
+            active = sum(1 for r in self._records.values() if r.status not in {"completed", "error"})
+            if active >= MAX_CONCURRENT_GAMES:
+                raise CapacityError(
+                    f"Server is at capacity ({MAX_CONCURRENT_GAMES} active games). Try again later."
+                )
+
             game_id = self._next_game_id
             self._next_game_id += 1
 

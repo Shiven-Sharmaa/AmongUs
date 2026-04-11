@@ -1,54 +1,20 @@
-# THIS IS JUST CLONED FROM FAR, NOT USED IN THE PROJECT CURRENTLY
+FROM python:3.11-slim
 
-ARG PYTORCH_CUDA_VERSION=2.0.1-cuda11.7-cudnn8
-FROM pytorch/pytorch:${PYTORCH_CUDA_VERSION}-runtime
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /app
 
-# Install some useful packages
-RUN apt-get update -q \
-    && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends \
-    # essential for running
-    git git-lfs tini \
-    # nice to have for devbox development
-    curl vim tmux less sudo rsync wget \
-    # CircleCI
-    ssh \
-    && apt-get clean \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential git \
     && rm -rf /var/lib/apt/lists/*
 
-ARG USERID=1001
-ARG GROUPID=1001
-ARG USERNAME=dev
+COPY requirements.deploy.txt /app/requirements.deploy.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r /app/requirements.deploy.txt
 
-# Simulate virtualenv activation
-ENV VIRTUAL_ENV="/opt/venv"
-ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
+COPY . /app
 
-RUN python3 -m venv "${VIRTUAL_ENV}" --system-site-packages \
-    && addgroup --gid ${GROUPID} ${USERNAME} \
-    && adduser --uid ${USERID} --gid ${GROUPID} --disabled-password --gecos '' ${USERNAME} \
-    && usermod -aG sudo ${USERNAME} \
-    && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-    && mkdir -p "/workspace" \
-    && chown -R ${USERNAME}:${USERNAME} "${VIRTUAL_ENV}" "/workspace"
-USER ${USERNAME}
-WORKDIR "/workspace"
+EXPOSE 8000
 
-# Copy package installation instructions and version.txt files
-COPY --chown=${USERNAME}:${USERNAME} pyproject.toml ./
-
-# Install content-less packages and their dependencies
-RUN mkdir AmongUs \
-    && touch AmongUs/__init__.py \
-    && pip install --require-virtualenv --config-settings editable_mode=compat -e '.[dev]' \
-    && rm -rf "${HOME}/.cache" "./dist" \
-    # Run Pyright so its Node.js package gets installed
-    && pyright .
-
-# Copy whole repo
-COPY --chown=${USERNAME}:${USERNAME} . .
-
-# Default command to run -- may be changed at runtime
-CMD ["/bin/bash"]
+CMD ["sh", "-c", "uvicorn server.app:app --host 0.0.0.0 --port ${PORT:-8000}"]

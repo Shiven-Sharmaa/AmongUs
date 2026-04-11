@@ -26,7 +26,8 @@
       "Bash(mkdir analysis:*)",
       "Bash(mv run_v2_inference.py run_inference.py)",
       "Bash(mv step_recompute_v2.py step_recompute.py)",
-      "Bash(mv verify_v2_pipeline.py verify_pipeline.py)"
+      "Bash(mv verify_v2_pipeline.py verify_pipeline.py)",
+      "Bash(find /c/Users/shiven/Desktop/AmongUs -name \"index.html\" -exec cat {} \\\\;)"
     ]
   }
 }
