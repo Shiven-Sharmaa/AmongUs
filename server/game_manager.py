@@ -112,11 +112,33 @@ class GameManager:
 
         raise TimeoutError("Timed out waiting for HumanAgent initialization.")
 
+    @staticmethod
+    def _resolve_human_role(requested: Optional[str]) -> str:
+        """
+        Resolve the human player's role.
+
+        Priority:
+          1. HUMAN_ROLE env var (if set to 'crewmate' or 'impostor') — locks role server-side.
+          2. requested value from the frontend ('crewmate' or 'impostor').
+          3. Falls back to '' (random).
+
+        Set HUMAN_ROLE=crewmate or HUMAN_ROLE=impostor in .env to lock the role.
+        Leave unset (or set to 'random') to let the UI / default randomness decide.
+        """
+        env_role = os.getenv("HUMAN_ROLE", "").strip().lower()
+        if env_role in {"crewmate", "impostor"}:
+            return env_role
+        req = (requested or "").strip().lower()
+        if req in {"crewmate", "impostor"}:
+            return req
+        return ""  # random
+
     async def create_game(
         self,
         crewmate_model: Optional[str] = None,
         impostor_model: Optional[str] = None,
-    ) -> int:
+        human_role: Optional[str] = None,
+    ) -> tuple:
         if not os.getenv("OPENROUTER_API_KEY"):
             raise RuntimeError("OPENROUTER_API_KEY is required.")
 
@@ -128,6 +150,10 @@ class GameManager:
             raise RuntimeError(
                 "OPENROUTER_CREWMATE_MODEL and OPENROUTER_IMPOSTOR_MODEL must be set in .env"
             )
+
+        resolved_role = self._resolve_human_role(human_role)
+        # TOURNAMENT_HUMAN_ROLE is read by AmongUs.initialize_players() via os.getenv.
+        os.environ["TOURNAMENT_HUMAN_ROLE"] = resolved_role
 
         async with self._init_lock:
             active = sum(1 for r in self._records.values() if r.status not in {"completed", "error"})
@@ -187,7 +213,7 @@ class GameManager:
             if record.status not in {"completed", "error"}:
                 record.status = "running"
 
-            return game_id
+            return game_id, resolved_role or "random"
 
     def _serialize_player_positions(self, game: AmongUs) -> List[Dict[str, Any]]:
         positions: List[Dict[str, Any]] = []
@@ -298,6 +324,9 @@ class GameManager:
                     "system": False,
                 }
             )
+        # Flush any pending meeting announcements even if no one has spoken yet.
+        if pending_announcements:
+            messages.extend(pending_announcements)
         return messages
 
     def _serialize_progress_snapshot(self, completed: int, total: int) -> Dict[str, Any]:
@@ -312,6 +341,52 @@ class GameManager:
             "remaining": remaining,
             "ratio": ratio,
         }
+
+    def _compute_crewmate_task_progress(self, game: AmongUs, human_agent=None) -> List[Dict[str, Any]]:
+        result = []
+        try:
+            players = getattr(game, "players", None)
+            if not players:
+                return result
+            human_player_name = (
+                human_agent.player.name
+                if (human_agent and getattr(human_agent, "player", None))
+                else None
+            )
+            print(f"[crewmate_tasks] {len(players)} players, identities: {[getattr(p, 'identity', 'N/A') for p in players]}")
+            for player in players:
+                identity = getattr(player, "identity", "")
+                if identity != "Crewmate":
+                    continue
+                if not getattr(player, "is_alive", True):
+                    continue
+                tasks_raw = getattr(player, "tasks", None)
+                if tasks_raw is None:
+                    tasks = []
+                else:
+                    try:
+                        tasks = list(tasks_raw)
+                    except Exception:
+                        tasks = []
+                total = len(tasks)
+                completed = 0
+                for task in tasks:
+                    try:
+                        if task.check_completion():
+                            completed += 1
+                    except Exception:
+                        continue
+                result.append({
+                    "name": str(player.name),
+                    "completed": int(completed),
+                    "total": int(total),
+                    "remaining": int(max(0, total - completed)),
+                    "is_self": bool(str(player.name) == str(human_player_name)),
+                })
+            print(f"[crewmate_tasks] result: {result}")
+        except Exception as exc:
+            print(f"[crewmate_tasks ERROR] {type(exc).__name__}: {exc}")
+        return result
 
     def _compute_global_task_progress(self, game: AmongUs) -> Dict[str, Any]:
         task_assignment = getattr(game, "task_assignment", None)
@@ -384,7 +459,10 @@ class GameManager:
             human_state = human_agent.get_current_state_for_web()
             current_step = human_state.get("current_step")
             raw_actions = human_state.get("available_actions") or []
-            monitor_rooms = sorted(list(getattr(game.map, "ship_map", {}).nodes)) if hasattr(game, "map") else []
+            try:
+                monitor_rooms = sorted(list(game.map.ship_map.nodes)) if hasattr(game, "map") and hasattr(game.map, "ship_map") else []
+            except Exception:
+                monitor_rooms = []
             for idx, action in enumerate(raw_actions):
                 action_name = action.get("name", "")
                 requires_location = bool(action.get("requires_location", False))
@@ -404,6 +482,31 @@ class GameManager:
             "global": self._compute_global_task_progress(game),
             "human": self._compute_human_task_progress(human_agent),
         }
+        crewmate_tasks = self._compute_crewmate_task_progress(game, human_agent)
+
+        human_tasks: List[Dict[str, Any]] = []
+        monitor_results: List[str] = []
+        if human_agent and getattr(human_agent, "player", None):
+            tasks_raw = getattr(human_agent.player, "tasks", None)
+            if tasks_raw is not None:
+                for task in tasks_raw:
+                    try:
+                        human_tasks.append({
+                            "name": str(task.name),
+                            "location": str(task.location),
+                            "task_type": str(task.task_type),
+                            "is_done": bool(task.check_completion()),
+                        })
+                    except Exception:
+                        continue
+            for entry in (getattr(human_agent.player, "observation_history", None) or []):
+                s = str(entry)
+                if "Monitor Record:" in s:
+                    monitor_results.append(s)
+
+        kill_cooldown: Optional[int] = None
+        if human_agent and getattr(getattr(human_agent, "player", None), "identity", "") == "Impostor":
+            kill_cooldown = int(getattr(human_agent.player, "kill_cooldown", 0) or 0)
 
         return {
             "game_id": game_id,
@@ -429,6 +532,10 @@ class GameManager:
             "player_positions": player_positions,
             "meeting_messages": meeting_messages,
             "task_progress": task_progress,
+            "crewmate_tasks": crewmate_tasks,
+            "human_tasks": human_tasks,
+            "monitor_results": monitor_results,
+            "kill_cooldown": kill_cooldown,
         }
 
     def submit_human_action(

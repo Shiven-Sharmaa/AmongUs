@@ -1,5 +1,5 @@
 // Runtime override for backend API base URL.
-// Leave empty for same-origin API calls.
+// Points to the Fly.io backend. Update if your Fly app name differs from "amongus-backend".
 window.API_BASE_URL = "";
 
 // Optional API key for protected backend endpoints.

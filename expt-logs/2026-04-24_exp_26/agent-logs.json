@@ -1,0 +1,129 @@
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:53:59.922003",
+  "player": {
+    "name": "Player 1: purple",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "a9326fee9ff82e8b2b5adf064488d1ea09c67da9601748f5be2c349329f7ef51"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 1: purple. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 1: purple, Player 2: orange, Player 3: brown, Player 4: white, Player 5: yellow, Player 6: lime, Player 7: cyan\n\nObservation history:\nNo observations have been made yet.\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Navigation) \nPath: Cafeteria->Weapons->Navigation\n2. short: Accept Diverted Power (Lower Engine) \nPath: Cafeteria->Upper Engine->Lower Engine\n3. long: Empty Chute (O2) \nPath: Cafeteria->Weapons->O2\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "No actions have been taken yet. No observations have been made. I am currently in Cafeteria with six other players: orange, brown, white, yellow, lime, and cyan. My tasks include Fix Wiring (Navigation), Accept Diverted Power (Lower Engine), and Empty Chute (O2).",
+      "Thinking Process": {
+        "thought": "Since I have no evidence of any suspicious behavior or actions from other players, it would be prudent to start moving towards completing my tasks. The best immediate action is to move to Weapons, as it is a part of the path to complete my common task (Fix Wiring) in Navigation. By moving to Weapons, I can also keep an eye on other players and potentially gather information about their actions and behaviors as we progress through the game.",
+        "action": "MOVE from Cafeteria to Weapons FINAL_ACTION_INDEX: 2"
+      }
+    },
+    "full_response": "[Condensed Memory]\nNo actions have been taken yet. No observations have been made. I am currently in Cafeteria with six other players: orange, brown, white, yellow, lime, and cyan. My tasks include Fix Wiring (Navigation), Accept Diverted Power (Lower Engine), and Empty Chute (O2). \n\n[Thinking Process]\nSince I have no evidence of any suspicious behavior or actions from other players, it would be prudent to start moving towards completing my tasks. The best immediate action is to move to Weapons, as it is a part of the path to complete my common task (Fix Wiring) in Navigation. By moving to Weapons, I can also keep an eye on other players and potentially gather information about their actions and behaviors as we progress through the game. \n\n[Action] MOVE from Cafeteria to Weapons  \nFINAL_ACTION_INDEX: 2"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:54:04.876036",
+  "player": {
+    "name": "Player 3: brown",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "4c0acfca53d2a0b5071dddc321f02d2508c10e43e934fac90e000836a9fc9340"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 3: brown. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 3: brown, Player 4: white, Player 5: yellow, Player 6: lime, Player 7: cyan\n\nObservation history:\n1. Timestep 0: [task] Player 1: purple MOVE from Cafeteria to Weapons\n2. Timestep 0: [task] Player 2: orange MOVE from Cafeteria to Medbay\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Navigation) \nPath: Cafeteria->Weapons->Navigation\n2. short: Calibrate Distributor (Electrical) \nPath: Cafeteria->Admin->Electrical\n3. long: Clear Asteroids (Weapons) \nPath: Cafeteria->Weapons\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Cafeteria with Players 4 (white), 5 (yellow), 6 (lime), and 7 (cyan). Players 1 (purple) and 2 (orange) have moved to Weapons and Medbay respectively. No kills have been witnessed. My tasks include Fix Wiring (Navigation), Calibrate Distributor (Electrical), and Clear Asteroids (Weapons).",
+      "Thinking Process": {
+        "thought": "In this task phase, I need to focus on completing my tasks while keeping an eye on the other players for suspicious behavior. I have multiple paths to choose from. Since I need to clear asteroids as one of my tasks, moving to Weapons would allow me to complete that task while observing the actions of others. Additionally, I can assess whether any players are acting unusually or if anyone is isolated, which might indicate they are an Impostor. Moving to Weapons first will let me work on the task directly, and if I notice anything suspicious, I can always call a meeting later if needed.",
+        "action": "MOVE from Cafeteria to Weapons FINAL_ACTION_INDEX: 2"
+      }
+    },
+    "full_response": "[Condensed Memory]\nCurrently in Cafeteria with Players 4 (white), 5 (yellow), 6 (lime), and 7 (cyan). Players 1 (purple) and 2 (orange) have moved to Weapons and Medbay respectively. No kills have been witnessed. My tasks include Fix Wiring (Navigation), Calibrate Distributor (Electrical), and Clear Asteroids (Weapons).\n\n[Thinking Process]\nIn this task phase, I need to focus on completing my tasks while keeping an eye on the other players for suspicious behavior. I have multiple paths to choose from. Since I need to clear asteroids as one of my tasks, moving to Weapons would allow me to complete that task while observing the actions of others. Additionally, I can assess whether any players are acting unusually or if anyone is isolated, which might indicate they are an Impostor. Moving to Weapons first will let me work on the task directly, and if I notice anything suspicious, I can always call a meeting later if needed.\n\n[Action] MOVE from Cafeteria to Weapons\nFINAL_ACTION_INDEX: 2"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:54:10.082818",
+  "player": {
+    "name": "Player 4: white",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "5884e57dfbe0e411464261711899ce62bd03e0493507e91c0f36120cd7dd00f0"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 4: white. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 4: white, Player 5: yellow, Player 6: lime, Player 7: cyan\n\nObservation history:\n1. Timestep 0: [task] Player 1: purple MOVE from Cafeteria to Weapons\n2. Timestep 0: [task] Player 2: orange MOVE from Cafeteria to Medbay\n3. Timestep 0: [task] Player 3: brown MOVE from Cafeteria to Weapons\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Navigation) \nPath: Cafeteria->Weapons->Navigation\n2. short: Accept Diverted Power (Weapons) \nPath: Cafeteria->Weapons\n3. long: Empty Chute (Storage) \nPath: Cafeteria->Admin->Storage\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in the Cafeteria with Players 5 (yellow), 6 (lime), and 7 (cyan). Players 1 (purple) and 3 (brown) have moved to Weapons, and Player 2 (orange) has moved to Medbay. No actions have been taken yet, and I have not witnessed any kills.",
+      "Thinking Process": {
+        "thought": "As a Crewmate, my main objective is to complete tasks while keeping an eye on the other players to identify any potential Impostors. I have two tasks that require me to go to Weapons, and since I see two players have already moved there (Players 1 and 3), I can join them. This also allows me to observe their actions closely, which could help in identifying any suspicious behavior. Moving to Weapons seems like a strategic choice at this moment.",
+        "action": "MOVE from Cafeteria to Weapons FINAL_ACTION_INDEX: 2"
+      }
+    },
+    "full_response": "[Condensed Memory]\nCurrently in the Cafeteria with Players 5 (yellow), 6 (lime), and 7 (cyan). Players 1 (purple) and 3 (brown) have moved to Weapons, and Player 2 (orange) has moved to Medbay. No actions have been taken yet, and I have not witnessed any kills.\n\n[Thinking Process]\nAs a Crewmate, my main objective is to complete tasks while keeping an eye on the other players to identify any potential Impostors. I have two tasks that require me to go to Weapons, and since I see two players have already moved there (Players 1 and 3), I can join them. This also allows me to observe their actions closely, which could help in identifying any suspicious behavior. Moving to Weapons seems like a strategic choice at this moment.\n\n[Action] MOVE from Cafeteria to Weapons\nFINAL_ACTION_INDEX: 2"
+  }
+}

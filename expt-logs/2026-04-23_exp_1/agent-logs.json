@@ -1,0 +1,27 @@
+{
+  "game_index": "Game 1",
+  "step": 0,
+  "timestamp": "2026-04-23 17:02:49.305298",
+  "player": {
+    "name": "Player 2: white",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "homosapiens/brain-1.0",
+    "location": "Cafeteria"
+  },
+  "interaction": {
+    "system_prompt": "Human Agent (Web)",
+    "prompt": {
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 2: white, Player 3: blue, Player 4: black, Player 5: lime, Player 6: orange, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 1: red MOVE from Cafeteria to Admin\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Cafeteria->Admin->Electrical\n2. short: Upload Data (Admin) \nPath: Cafeteria->Admin\n3. long: Empty Chute (O2) \nPath: Cafeteria->Weapons->O2\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Available Actions": "1: MOVE from Cafeteria to Admin\n2: MOVE from Cafeteria to Weapons\n3: MOVE from Cafeteria to Upper Engine\n4: MOVE from Cafeteria to Medbay\n5: CALL MEETING using the emergency button at Cafeteria",
+      "Current Step": "0/50",
+      "Current Player": "Player 2: white"
+    },
+    "response": {
+      "Condensed Memory": "",
+      "Thinking Process": "",
+      "Action": "CALL MEETING using the emergency button at Cafeteria"
+    },
+    "full_response": "[Action] CALL MEETING using the emergency button at Cafeteria"
+  }
+}

@@ -59,10 +59,13 @@ class Vent(MoveTo):
 
 
 class CallMeeting(Action):
-    def __init__(self, current_location):
+    def __init__(self, current_location, is_report_body=False):
         super().__init__("CALL MEETING", current_location=current_location)
+        self.is_report_body = is_report_body
 
     def __repr__(self):
+        if self.is_report_body:
+            return f"REPORT DEAD BODY at {self.current_location}"
         if self.current_location == "Cafeteria":
             return f"{self.name} using the emergency button at {self.current_location}"
         else:
@@ -86,15 +89,17 @@ class CallMeeting(Action):
             other_players_in_the_same_room = [
                 p for p in players_in_the_same_room if p != player
             ]
+            has_dead_body = any(
+                not p.is_alive and not p.reported_death
+                for p in other_players_in_the_same_room
+            )
+            if has_dead_body:
+                return [CallMeeting(current_location=current_location, is_report_body=True)]
             if (
                 current_location == "Cafeteria"
                 and env.button_num < env.game_config["max_num_buttons"]
             ):
                 return [CallMeeting(current_location=current_location)]
-            else:
-                for other_player in other_players_in_the_same_room:
-                    if not other_player.is_alive and not other_player.reported_death:
-                        return [CallMeeting(current_location=current_location)]
         return []
 
 

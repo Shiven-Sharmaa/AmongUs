@@ -481,6 +481,10 @@ class AmongUs:
             await self.agent_step(agent)
             if self.current_phase == "meeting":
                 break
+            # End the timestep early if a win condition is already met
+            early_winner = self.check_game_over()
+            if early_winner in (1, 2, 3):
+                return
 
     async def meeting_phase(self):
         # Move all players to the Cafeteria
@@ -756,7 +760,15 @@ class MessageSystem:
         message += f"{instruction}\n"
         players_text = ", ".join(record["players"])
         message += f"Current Location: {record['location']}\n"
-        message += f"Players in {record['location']}: {players_text}\n\n"
+        message += f"Players in {record['location']}: {players_text}\n"
+        if env.current_phase == "meeting":
+            dead_players = [p for p in env.players if not p.is_alive]
+            if dead_players:
+                dead_text = ", ".join(p.name for p in dead_players)
+                message += f"Dead players (absent from meeting): {dead_text}\n"
+            else:
+                message += "Dead players (absent from meeting): None\n"
+        message += "\n"
         return message
 
     def route_location_info_message(self, env):

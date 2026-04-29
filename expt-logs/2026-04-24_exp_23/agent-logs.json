@@ -1,0 +1,759 @@
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:37:20.842986",
+  "player": {
+    "name": "Player 1: lime",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "06adb8d2103eb184e9d490fe107e3de735fb0830397997c8bcee284dd919e777"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 1: lime. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 1: lime, Player 2: green, Player 3: cyan, Player 4: black, Player 5: orange, Player 6: blue, Player 7: pink\n\nObservation history:\nNo observations have been made yet.\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Cafeteria->Admin->Electrical\n2. short: Accept Diverted Power (Navigation) \nPath: Cafeteria->Weapons->Navigation\n3. long: Empty Chute (O2) \nPath: Cafeteria->Weapons->O2\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in the Cafeteria with players green, cyan, black, orange, blue, and pink. No actions or observations have been made yet. Assigned tasks include Fix Wiring in Electrical, Accept Diverted Power in Navigation, and Empty Chute in O2.",
+      "Thinking Process": {
+        "thought": "Since no observations have been made, it is essential to start performing tasks to gather information. The first task requires me to go to Electrical, which is critical for completing our objectives. Moving to Admin first will allow me to access Electrical afterward. I should focus on completing tasks while remaining aware of other players' movements to identify any suspicious behavior.",
+        "action": "MOVE from Cafeteria to Admin FINAL_ACTION_INDEX: 1"
+      }
+    },
+    "full_response": "[Condensed Memory]\nCurrently in the Cafeteria with players green, cyan, black, orange, blue, and pink. No actions or observations have been made yet. Assigned tasks include Fix Wiring in Electrical, Accept Diverted Power in Navigation, and Empty Chute in O2.\n\n[Thinking Process]\nSince no observations have been made, it is essential to start performing tasks to gather information. The first task requires me to go to Electrical, which is critical for completing our objectives. Moving to Admin first will allow me to access Electrical afterward. I should focus on completing tasks while remaining aware of other players' movements to identify any suspicious behavior.\n\n[Action] MOVE from Cafeteria to Admin\nFINAL_ACTION_INDEX: 1"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:37:24.887599",
+  "player": {
+    "name": "Player 2: green",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "7aea9bbf55833ea174fbcd01b1df86f02b02eb5d23787e37111186d593623f6c"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 2: green. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 2: green, Player 3: cyan, Player 4: black, Player 5: orange, Player 6: blue, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 1: lime MOVE from Cafeteria to Admin\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Cafeteria->Admin->Electrical\n2. short: Accept Diverted Power (O2) \nPath: Cafeteria->Weapons->O2\n3. long: Align Engine Output (Lower Engine) \nPath: Cafeteria->Upper Engine->Lower Engine\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Cafeteria with Players 3 (cyan), 4 (black), 5 (orange), 6 (blue), and 7 (pink). Player 1 (lime) moved to Admin. No kills have been witnessed so far, and no actions have been taken yet.",
+      "Thinking Process": {
+        "thought": "As a Crewmate, my priority is to complete tasks while staying vigilant for any suspicious behavior that may indicate an Impostor. I have three tasks assigned, and I can see that moving to Admin is a logical first step since it allows me to work towards my task of Fix Wiring in Electrical. Moreover, I can keep an eye on Player 1 (lime) and the actions of other players in Cafeteria while I move. I should avoid calling a meeting at this point as there is no concrete evidence of wrongdoing. Therefore, I will proceed to move to Admin.",
+        "action": "MOVE from Cafeteria to Admin FINAL_ACTION_INDEX: 1"
+      }
+    },
+    "full_response": "[Condensed Memory]\nCurrently in Cafeteria with Players 3 (cyan), 4 (black), 5 (orange), 6 (blue), and 7 (pink). Player 1 (lime) moved to Admin. No kills have been witnessed so far, and no actions have been taken yet.\n\n[Thinking Process]\nAs a Crewmate, my priority is to complete tasks while staying vigilant for any suspicious behavior that may indicate an Impostor. I have three tasks assigned, and I can see that moving to Admin is a logical first step since it allows me to work towards my task of Fix Wiring in Electrical. Moreover, I can keep an eye on Player 1 (lime) and the actions of other players in Cafeteria while I move. I should avoid calling a meeting at this point as there is no concrete evidence of wrongdoing. Therefore, I will proceed to move to Admin.\n\n[Action] MOVE from Cafeteria to Admin  \nFINAL_ACTION_INDEX: 1"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:37:28.950469",
+  "player": {
+    "name": "Player 4: black",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "homosapiens/brain-1.0",
+    "location": "Cafeteria"
+  },
+  "interaction": {
+    "system_prompt": "Human Agent (Web)",
+    "prompt": {
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 4: black, Player 5: orange, Player 6: blue, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 1: lime MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 2: green MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Cafeteria->Admin->Electrical\n2. short: Prime Shields (Shields) \nPath: Cafeteria->Admin->O2->Shields\n3. long: Empty Garbage (Cafeteria) \nPath: You are already at the task location.\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n6. COMPLETE TASK - Empty Garbage\n",
+      "Available Actions": "1: MOVE from Cafeteria to Admin\n2: MOVE from Cafeteria to Weapons\n3: MOVE from Cafeteria to Upper Engine\n4: MOVE from Cafeteria to Medbay\n5: CALL MEETING using the emergency button at Cafeteria\n6: COMPLETE TASK - Empty Garbage",
+      "Current Step": "0/50",
+      "Current Player": "Player 4: black"
+    },
+    "response": {
+      "Condensed Memory": "",
+      "Thinking Process": "",
+      "Action": "MOVE from Cafeteria to Upper Engine"
+    },
+    "full_response": "[Action] MOVE from Cafeteria to Upper Engine"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:37:32.663634",
+  "player": {
+    "name": "Player 5: orange",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "e74a0da898cb28f7fd272eb5b1ab34a6e4a6c949c86dda4ced0f00aa1bdf061f"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 5: orange. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 5: orange, Player 6: blue, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 1: lime MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 2: green MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n4. Timestep 0: [task] Player 4: black MOVE from Cafeteria to Upper Engine\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Cafeteria->Admin->Electrical\n2. short: Chart Course (Navigation) \nPath: Cafeteria->Weapons->Navigation\n3. long: Empty Garbage (Storage) \nPath: Cafeteria->Admin->Storage\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Cafeteria with Players 6 (blue) and 7 (pink). Players 1 (lime), 2 (green), and 3 (cyan) have moved to Admin, while Player 4 (black) has moved to Upper Engine. I have not witnessed any kills or suspicious activities so far. No actions have been taken yet.",
+      "Thinking Process": {
+        "thought": "Since I have no concrete evidence to suspect anyone as an Impostor, it would be prudent to focus on completing my tasks. I can either move to Admin, where most players are, or go to Weapons for my Chart Course task. However, moving to Admin could allow me to observe and gather more information on the other players who are gathered there. This might also help establish alibis or identify suspicious behavior among them. Therefore, I will prioritize moving to Admin.",
+        "action": "MOVE from Cafeteria to Admin FINAL_ACTION_INDEX: 1"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Cafeteria with Players 6 (blue) and 7 (pink). Players 1 (lime), 2 (green), and 3 (cyan) have moved to Admin, while Player 4 (black) has moved to Upper Engine. I have not witnessed any kills or suspicious activities so far. No actions have been taken yet.\n\n[Thinking Process]\nSince I have no concrete evidence to suspect anyone as an Impostor, it would be prudent to focus on completing my tasks. I can either move to Admin, where most players are, or go to Weapons for my Chart Course task. However, moving to Admin could allow me to observe and gather more information on the other players who are gathered there. This might also help establish alibis or identify suspicious behavior among them. Therefore, I will prioritize moving to Admin.\n\n[Action] MOVE from Cafeteria to Admin\nFINAL_ACTION_INDEX: 1"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 0,
+  "timestamp": "2026-04-24 14:37:36.683242",
+  "player": {
+    "name": "Player 6: blue",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Cafeteria"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "f1c9b0c303a174058e08775193882952ae342d7f2901def6f41b4cefbc4e0168"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 6: blue. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "No thought process has been made.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Cafeteria\nPlayers in Cafeteria: Player 6: blue, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 2: green MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 4: black MOVE from Cafeteria to Upper Engine\n4. Timestep 0: [task] Player 5: orange MOVE from Cafeteria to Admin\n\nAction history:\nNo actions have been taken yet.\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Cafeteria->Admin->Electrical\n2. short: Download Data (Navigation) \nPath: Cafeteria->Weapons->Navigation\n3. long: Empty Chute (Storage) \nPath: Cafeteria->Admin->Storage\n\nAvailable actions:\n1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "No memory has been processed.",
+      "Alive Players": [
+        "Cafeteria"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Cafeteria to Admin\n2. MOVE from Cafeteria to Weapons\n3. MOVE from Cafeteria to Upper Engine\n4. MOVE from Cafeteria to Medbay\n5. CALL MEETING using the emergency button at Cafeteria",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "- Current location: Cafeteria. - Players in Cafeteria: Player 6 (blue), Player 7 (pink). - Players observed moving from Cafeteria: Player 2 (green), Player 3 (cyan), Player 4 (black), Player 5 (orange) all moved to Admin or Upper Engine. - No kills have been witnessed.",
+      "Thinking Process": "Given that I am currently in Cafeteria with another Crewmate (Player 7: pink) and I have several tasks to complete, I should prioritize moving to Admin to complete my first task of fixing wiring in Electrical. Since multiple players have moved towards Admin, it would be prudent to join them there. This way, I can also observe their actions for any suspicious behavior and ensure safety in numbers.",
+      "Action": "MOVE from Cafeteria to Admin. FINAL_ACTION_INDEX: 1"
+    },
+    "full_response": "[Condensed Memory]\n- Current location: Cafeteria.\n- Players in Cafeteria: Player 6 (blue), Player 7 (pink).\n- Players observed moving from Cafeteria: Player 2 (green), Player 3 (cyan), Player 4 (black), Player 5 (orange) all moved to Admin or Upper Engine.\n- No kills have been witnessed.\n\n[Thinking Process]\nGiven that I am currently in Cafeteria with another Crewmate (Player 7: pink) and I have several tasks to complete, I should prioritize moving to Admin to complete my first task of fixing wiring in Electrical. Since multiple players have moved towards Admin, it would be prudent to join them there. This way, I can also observe their actions for any suspicious behavior and ensure safety in numbers.\n\n[Action]\nMOVE from Cafeteria to Admin. \n\nFINAL_ACTION_INDEX: 1"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 1,
+  "timestamp": "2026-04-24 14:37:40.384664",
+  "player": {
+    "name": "Player 1: lime",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Admin"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "06adb8d2103eb184e9d490fe107e3de735fb0830397997c8bcee284dd919e777"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 1: lime. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Since no observations have been made, it is essential to start performing tasks to gather information. The first task requires me to go to Electrical, which is critical for completing our objectives. Moving to Admin first will allow me to access Electrical afterward. I should focus on completing tasks while remaining aware of other players' movements to identify any suspicious behavior.",
+      "All Info": "Game Time: 0/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Admin\nPlayers in Admin: Player 1: lime, Player 2: green, Player 3: cyan, Player 5: orange, Player 6: blue\n\nObservation history:\n1. Timestep 0: [task] Player 2: green MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 5: orange MOVE from Cafeteria to Admin\n4. Timestep 0: [task] Player 6: blue MOVE from Cafeteria to Admin\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Admin->Electrical\n2. short: Accept Diverted Power (Navigation) \nPath: Admin->Cafeteria->Weapons->Navigation\n3. long: Empty Chute (O2) \nPath: Admin->O2\n\nAvailable actions:\n1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in the Cafeteria with players green, cyan, black, orange, blue, and pink. No actions or observations have been made yet. Assigned tasks include Fix Wiring in Electrical, Accept Diverted Power in Navigation, and Empty Chute in O2.",
+      "Alive Players": [
+        "Admin"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Admin with players green, cyan, orange, and blue. No actions or observations have been made yet. I need to complete my tasks, starting with Fix Wiring in Electrical.",
+      "Thinking Process": {
+        "thought": "Since I am currently in Admin and all players present are from Cafeteria, I need to move to Electrical to start on my first task. This will allow me to begin completing tasks while also remaining vigilant of other players' actions. Moving to Electrical is essential as it is one of my assigned tasks and may also provide opportunities to observe players' movements, which can help identify any potential Impostors.",
+        "action": "MOVE from Admin to Electrical FINAL_ACTION_INDEX: 4"
+      }
+    },
+    "full_response": "[Condensed Memory]  \nCurrently in Admin with players green, cyan, orange, and blue. No actions or observations have been made yet. I need to complete my tasks, starting with Fix Wiring in Electrical.  \n\n[Thinking Process]  \nSince I am currently in Admin and all players present are from Cafeteria, I need to move to Electrical to start on my first task. This will allow me to begin completing tasks while also remaining vigilant of other players' actions. Moving to Electrical is essential as it is one of my assigned tasks and may also provide opportunities to observe players' movements, which can help identify any potential Impostors.  \n\n[Action] MOVE from Admin to Electrical  \nFINAL_ACTION_INDEX: 4"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 1,
+  "timestamp": "2026-04-24 14:37:43.219000",
+  "player": {
+    "name": "Player 2: green",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Admin"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "7aea9bbf55833ea174fbcd01b1df86f02b02eb5d23787e37111186d593623f6c"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 2: green. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "As a Crewmate, my priority is to complete tasks while staying vigilant for any suspicious behavior that may indicate an Impostor. I have three tasks assigned, and I can see that moving to Admin is a logical first step since it allows me to work towards my task of Fix Wiring in Electrical. Moreover, I can keep an eye on Player 1 (lime) and the actions of other players in Cafeteria while I move. I should avoid calling a meeting at this point as there is no concrete evidence of wrongdoing. Therefore, I will proceed to move to Admin.",
+      "All Info": "Game Time: 1/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Admin\nPlayers in Admin: Player 2: green, Player 3: cyan, Player 5: orange, Player 6: blue\n\nObservation history:\n1. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 5: orange MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 6: blue MOVE from Cafeteria to Admin\n4. Timestep 1: [task] Player 1: lime MOVE from Admin to Electrical\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Admin->Electrical\n2. short: Accept Diverted Power (O2) \nPath: Admin->O2\n3. long: Align Engine Output (Lower Engine) \nPath: Admin->Storage->Lower Engine\n\nAvailable actions:\n1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in Cafeteria with Players 3 (cyan), 4 (black), 5 (orange), 6 (blue), and 7 (pink). Player 1 (lime) moved to Admin. No kills have been witnessed so far, and no actions have been taken yet.",
+      "Alive Players": [
+        "Admin"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Admin with Players 3 (cyan), 5 (orange), and 6 (blue). Player 1 (lime) moved from Admin to Electrical. No kills have been witnessed, and I have not yet completed any tasks.",
+      "Thinking Process": {
+        "thought": "Since I am in Admin, the best course of action is to move to Electrical, as one of my tasks is to Fix Wiring there. This will allow me to work towards completing my tasks while remaining vigilant about the actions of the other players. Moving to Electrical also gives me a chance to see if Player 1 (lime) is behaving suspiciously after moving there. I will avoid unnecessary meetings at this time since there is no evidence of any wrongdoing, and it is better to focus on completing tasks.",
+        "action": "MOVE from Admin to Electrical FINAL_ACTION_INDEX: 4"
+      }
+    },
+    "full_response": "[Condensed Memory]  \nCurrently in Admin with Players 3 (cyan), 5 (orange), and 6 (blue). Player 1 (lime) moved from Admin to Electrical. No kills have been witnessed, and I have not yet completed any tasks.\n\n[Thinking Process]  \nSince I am in Admin, the best course of action is to move to Electrical, as one of my tasks is to Fix Wiring there. This will allow me to work towards completing my tasks while remaining vigilant about the actions of the other players. Moving to Electrical also gives me a chance to see if Player 1 (lime) is behaving suspiciously after moving there. I will avoid unnecessary meetings at this time since there is no evidence of any wrongdoing, and it is better to focus on completing tasks.\n\n[Action] MOVE from Admin to Electrical  \nFINAL_ACTION_INDEX: 4"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 1,
+  "timestamp": "2026-04-24 14:37:46.128754",
+  "player": {
+    "name": "Player 4: black",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "homosapiens/brain-1.0",
+    "location": "Upper Engine"
+  },
+  "interaction": {
+    "system_prompt": "Human Agent (Web)",
+    "prompt": {
+      "All Info": "Game Time: 1/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Upper Engine\nPlayers in Upper Engine: Player 4: black, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 1: lime MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 2: green MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n4. Timestep 0: [task] Player 7: pink MOVE from Cafeteria to Upper Engine\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Upper Engine\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Upper Engine->Lower Engine->Electrical\n2. short: Prime Shields (Shields) \nPath: Upper Engine->Lower Engine->Storage->Shields\n3. long: Empty Garbage (Cafeteria) \nPath: Upper Engine->Cafeteria\n\nAvailable actions:\n1. MOVE from Upper Engine to Reactor\n2. MOVE from Upper Engine to Lower Engine\n3. MOVE from Upper Engine to Cafeteria\n4. MOVE from Upper Engine to Security\n5. MOVE from Upper Engine to Medbay\n",
+      "Available Actions": "1: MOVE from Upper Engine to Reactor\n2: MOVE from Upper Engine to Lower Engine\n3: MOVE from Upper Engine to Cafeteria\n4: MOVE from Upper Engine to Security\n5: MOVE from Upper Engine to Medbay",
+      "Current Step": "1/50",
+      "Current Player": "Player 4: black"
+    },
+    "response": {
+      "Condensed Memory": "",
+      "Thinking Process": "",
+      "Action": "MOVE from Upper Engine to Security"
+    },
+    "full_response": "[Action] MOVE from Upper Engine to Security"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 1,
+  "timestamp": "2026-04-24 14:37:48.652996",
+  "player": {
+    "name": "Player 6: blue",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Admin"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "f1c9b0c303a174058e08775193882952ae342d7f2901def6f41b4cefbc4e0168"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 6: blue. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Given that I am currently in Cafeteria with another Crewmate (Player 7: pink) and I have several tasks to complete, I should prioritize moving to Admin to complete my first task of fixing wiring in Electrical. Since multiple players have moved towards Admin, it would be prudent to join them there. This way, I can also observe their actions for any suspicious behavior and ensure safety in numbers.",
+      "All Info": "Game Time: 1/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Admin\nPlayers in Admin: Player 3: cyan, Player 6: blue, Player 5: orange (dead)\n\nObservation history:\n1. Timestep 1: [task] Player 3: cyan KILL Player 5: orange\n2. Timestep 0: [task] Player 5: orange MOVE from Cafeteria to Admin\n3. Timestep 1: [task] Player 1: lime MOVE from Admin to Electrical\n4. Timestep 1: [task] Player 2: green MOVE from Admin to Electrical\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Admin->Electrical\n2. short: Download Data (Navigation) \nPath: Admin->Cafeteria->Weapons->Navigation\n3. long: Empty Chute (Storage) \nPath: Admin->Storage\n\nAvailable actions:\n1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical\n5. REPORT DEAD BODY at Admin\n",
+      "Structured Evidence": "Witnessed kills (highest-priority evidence):\n1. Timestep 1: Player 3: cyan KILL Player 5: orange",
+      "Memory": "- Current location: Cafeteria.\n- Players in Cafeteria: Player 6 (blue), Player 7 (pink).\n- Players observed moving from Cafeteria: Player 2 (green), Player 3 (cyan), Player 4 (black), Player 5 (orange) all moved to Admin or Upper Engine.\n- No kills have been witnessed.",
+      "Alive Players": [
+        "Admin"
+      ],
+      "Eliminated Players (Inferred)": [
+        "Player 5: orange"
+      ],
+      "Available Actions (Indexed)": "1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical\n5. REPORT DEAD BODY at Admin",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Admin along with Player 3: cyan. I previously observed Player 3 kill Player 5: orange, who is now eliminated. Players 1: lime and 2: green have moved from Admin to Electrical. My assigned tasks include Fix Wiring in Electrical, which I need to complete.",
+      "Thinking Process": {
+        "thought": "Given that Player 3 has already committed a kill, I need to act quickly to gather evidence and alert others. However, it is essential to prioritize completing my tasks to maintain the game dynamics. Moving to Electrical will allow me to complete my first task while also distancing myself from Player 3. If I stay in Admin, I risk being alone with a suspected Impostor. By moving to Electrical, I can also potentially encounter Players 1 and 2, who are already en route there, ensuring safety in numbers.",
+        "action": "MOVE from Admin to Electrical"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Admin along with Player 3: cyan. I previously observed Player 3 kill Player 5: orange, who is now eliminated. Players 1: lime and 2: green have moved from Admin to Electrical. My assigned tasks include Fix Wiring in Electrical, which I need to complete. \n\n[Thinking Process]\nGiven that Player 3 has already committed a kill, I need to act quickly to gather evidence and alert others. However, it is essential to prioritize completing my tasks to maintain the game dynamics. Moving to Electrical will allow me to complete my first task while also distancing myself from Player 3. If I stay in Admin, I risk being alone with a suspected Impostor. By moving to Electrical, I can also potentially encounter Players 1 and 2, who are already en route there, ensuring safety in numbers.\n\n[Action] MOVE from Admin to Electrical"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 2,
+  "timestamp": "2026-04-24 14:37:51.779078",
+  "player": {
+    "name": "Player 1: lime",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Electrical"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "06adb8d2103eb184e9d490fe107e3de735fb0830397997c8bcee284dd919e777"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 1: lime. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Since I am currently in Admin and all players present are from Cafeteria, I need to move to Electrical to start on my first task. This will allow me to begin completing tasks while also remaining vigilant of other players' actions. Moving to Electrical is essential as it is one of my assigned tasks and may also provide opportunities to observe players' movements, which can help identify any potential Impostors.",
+      "All Info": "Game Time: 1/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Electrical\nPlayers in Electrical: Player 1: lime, Player 2: green, Player 6: blue\n\nObservation history:\n1. Timestep 0: [task] Player 5: orange MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 6: blue MOVE from Cafeteria to Admin\n3. Timestep 1: [task] Player 2: green MOVE from Admin to Electrical\n4. Timestep 1: [task] Player 6: blue MOVE from Admin to Electrical\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: You are already at the task location.\n2. short: Accept Diverted Power (Navigation) \nPath: Electrical->Storage->Shields->Navigation\n3. long: Empty Chute (O2) \nPath: Electrical->Admin->O2\n\nAvailable actions:\n1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n4. COMPLETE TASK - Fix Wiring\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in Admin with players green, cyan, orange, and blue. No actions or observations have been made yet. I need to complete my tasks, starting with Fix Wiring in Electrical.",
+      "Alive Players": [
+        "Electrical"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n4. COMPLETE TASK - Fix Wiring",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Electrical with players green and blue. I need to complete my assigned task, Fix Wiring, which I can start immediately since I'm at the task location. Moving away would delay task completion.",
+      "Thinking Process": {
+        "thought": "Completing the Fix Wiring task is my immediate priority as it is a common task that benefits the entire crew and moves us closer to victory. I am currently surrounded by players green and blue, which provides a level of safety in case an Impostor tries to make a move. By completing my task, I can also maintain my credibility among the other players. Once I finish this task, I can consider my next move, whether it is to move towards the next task or gather more information.",
+        "action": "COMPLETE TASK - Fix Wiring"
+      }
+    },
+    "full_response": "[Condensed Memory]\nCurrently in Electrical with players green and blue. I need to complete my assigned task, Fix Wiring, which I can start immediately since I'm at the task location. Moving away would delay task completion.\n\n[Thinking Process]\nCompleting the Fix Wiring task is my immediate priority as it is a common task that benefits the entire crew and moves us closer to victory. I am currently surrounded by players green and blue, which provides a level of safety in case an Impostor tries to make a move. By completing my task, I can also maintain my credibility among the other players. Once I finish this task, I can consider my next move, whether it is to move towards the next task or gather more information.\n\n[Action] COMPLETE TASK - Fix Wiring"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 2,
+  "timestamp": "2026-04-24 14:37:54.788992",
+  "player": {
+    "name": "Player 2: green",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Electrical"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "7aea9bbf55833ea174fbcd01b1df86f02b02eb5d23787e37111186d593623f6c"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 2: green. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Since I am in Admin, the best course of action is to move to Electrical, as one of my tasks is to Fix Wiring there. This will allow me to work towards completing my tasks while remaining vigilant about the actions of the other players. Moving to Electrical also gives me a chance to see if Player 1 (lime) is behaving suspiciously after moving there. I will avoid unnecessary meetings at this time since there is no evidence of any wrongdoing, and it is better to focus on completing tasks.",
+      "All Info": "Game Time: 2/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Electrical\nPlayers in Electrical: Player 1: lime, Player 2: green, Player 6: blue\n\nObservation history:\n1. Timestep 0: [task] Player 6: blue MOVE from Cafeteria to Admin\n2. Timestep 1: [task] Player 1: lime MOVE from Admin to Electrical\n3. Timestep 1: [task] Player 6: blue MOVE from Admin to Electrical\n4. Timestep 2: [task] Player 1: lime Seemingly doing task\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: You are already at the task location.\n2. short: Accept Diverted Power (O2) \nPath: Electrical->Admin->O2\n3. long: Align Engine Output (Lower Engine) \nPath: Electrical->Lower Engine\n\nAvailable actions:\n1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n4. COMPLETE TASK - Fix Wiring\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in Admin with Players 3 (cyan), 5 (orange), and 6 (blue). Player 1 (lime) moved from Admin to Electrical. No kills have been witnessed, and I have not yet completed any tasks.",
+      "Alive Players": [
+        "Electrical"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n4. COMPLETE TASK - Fix Wiring",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Electrical with Players 1 (lime) and 6 (blue). Player 1 was observed seemingly doing a task. I have moved from Admin to Electrical and have not witnessed any kills. My assigned task of Fix Wiring is in progress.",
+      "Thinking Process": {
+        "thought": "Since I am currently in Electrical and my assigned task is to Fix Wiring, it would be most efficient to COMPLETE TASK next. This will allow me to make progress towards completing my tasks while still keeping an eye on the actions of Players 1 and 6. If I complete the task, I can then assess whether to move to another location or keep an eye on the other players for any suspicious behavior.",
+        "action": "COMPLETE TASK - Fix Wiring"
+      }
+    },
+    "full_response": "[Condensed Memory]\nCurrently in Electrical with Players 1 (lime) and 6 (blue). Player 1 was observed seemingly doing a task. I have moved from Admin to Electrical and have not witnessed any kills. My assigned task of Fix Wiring is in progress.\n\n[Thinking Process]\nSince I am currently in Electrical and my assigned task is to Fix Wiring, it would be most efficient to COMPLETE TASK next. This will allow me to make progress towards completing my tasks while still keeping an eye on the actions of Players 1 and 6. If I complete the task, I can then assess whether to move to another location or keep an eye on the other players for any suspicious behavior.\n\n[Action] COMPLETE TASK - Fix Wiring"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 2,
+  "timestamp": "2026-04-24 14:37:58.088516",
+  "player": {
+    "name": "Player 4: black",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "homosapiens/brain-1.0",
+    "location": "Security"
+  },
+  "interaction": {
+    "system_prompt": "Human Agent (Web)",
+    "prompt": {
+      "All Info": "Game Time: 2/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Security\nPlayers in Security: Player 4: black, Player 7: pink\n\nObservation history:\n1. Timestep 0: [task] Player 2: green MOVE from Cafeteria to Admin\n2. Timestep 0: [task] Player 3: cyan MOVE from Cafeteria to Admin\n3. Timestep 0: [task] Player 7: pink MOVE from Cafeteria to Upper Engine\n4. Timestep 1: [task] Player 7: pink MOVE from Upper Engine to Security\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Upper Engine\nTimestep 1: [task phase] MOVE from Upper Engine to Security\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Security->Lower Engine->Electrical\n2. short: Prime Shields (Shields) \nPath: Security->Lower Engine->Storage->Shields\n3. long: Empty Garbage (Cafeteria) \nPath: Security->Upper Engine->Cafeteria\n\nAvailable actions:\n1. MOVE from Security to Lower Engine\n2. MOVE from Security to Reactor\n3. MOVE from Security to Upper Engine\n4. VIEW MONITOR\n",
+      "Available Actions": "1: MOVE from Security to Lower Engine\n2: MOVE from Security to Reactor\n3: MOVE from Security to Upper Engine\n4: VIEW MONITOR",
+      "Current Step": "2/50",
+      "Current Player": "Player 4: black"
+    },
+    "response": {
+      "Condensed Memory": "",
+      "Thinking Process": "",
+      "Action": "VIEW MONITOR @ Admin"
+    },
+    "full_response": "[Action] VIEW MONITOR @ Admin"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 2,
+  "timestamp": "2026-04-24 14:38:00.656070",
+  "player": {
+    "name": "Player 6: blue",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Electrical"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "f1c9b0c303a174058e08775193882952ae342d7f2901def6f41b4cefbc4e0168"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 6: blue. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Given that Player 3 has already committed a kill, I need to act quickly to gather evidence and alert others. However, it is essential to prioritize completing my tasks to maintain the game dynamics. Moving to Electrical will allow me to complete my first task while also distancing myself from Player 3. If I stay in Admin, I risk being alone with a suspected Impostor. By moving to Electrical, I can also potentially encounter Players 1 and 2, who are already en route there, ensuring safety in numbers.",
+      "All Info": "Game Time: 2/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Electrical\nPlayers in Electrical: Player 1: lime, Player 2: green, Player 6: blue\n\nObservation history:\n1. Timestep 1: [task] Player 3: cyan KILL Player 5: orange\n2. Timestep 1: [task] Player 2: green MOVE from Admin to Electrical\n3. Timestep 2: [task] Player 1: lime Seemingly doing task\n4. Timestep 2: [task] Player 2: green Seemingly doing task\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: You are already at the task location.\n2. short: Download Data (Navigation) \nPath: Electrical->Storage->Shields->Navigation\n3. long: Empty Chute (Storage) \nPath: Electrical->Storage\n\nAvailable actions:\n1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n4. COMPLETE TASK - Fix Wiring\n",
+      "Structured Evidence": "Witnessed kills (highest-priority evidence):\n1. Timestep 1: Player 3: cyan KILL Player 5: orange",
+      "Memory": "I am currently in Admin along with Player 3: cyan. I previously observed Player 3 kill Player 5: orange, who is now eliminated. Players 1: lime and 2: green have moved from Admin to Electrical. My assigned tasks include Fix Wiring in Electrical, which I need to complete.",
+      "Alive Players": [
+        "Electrical"
+      ],
+      "Eliminated Players (Inferred)": [
+        "Player 5: orange"
+      ],
+      "Available Actions (Indexed)": "1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n4. COMPLETE TASK - Fix Wiring",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Electrical with Players 1 (lime) and 2 (green). I previously witnessed Player 3 (cyan) kill Player 5 (orange). It is crucial to complete my assigned task, Fix Wiring, while maintaining a presence with other players to ensure safety.",
+      "Thinking Process": {
+        "thought": "Given the urgency of the situation, it is essential to complete my tasks while also keeping an eye on the suspected Impostor, Player 3. Since I am already in Electrical and with other Crewmates, completing the Fix Wiring task is the most logical action. This will not only progress our overall task completion but also keep me in a safe area with witnesses. After completing the task, I can plan my next move based on the dynamics and discussions that arise in the next phase.",
+        "action": "COMPLETE TASK - Fix Wiring"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Electrical with Players 1 (lime) and 2 (green). I previously witnessed Player 3 (cyan) kill Player 5 (orange). It is crucial to complete my assigned task, Fix Wiring, while maintaining a presence with other players to ensure safety.\n\n[Thinking Process]\nGiven the urgency of the situation, it is essential to complete my tasks while also keeping an eye on the suspected Impostor, Player 3. Since I am already in Electrical and with other Crewmates, completing the Fix Wiring task is the most logical action. This will not only progress our overall task completion but also keep me in a safe area with witnesses. After completing the task, I can plan my next move based on the dynamics and discussions that arise in the next phase.\n\n[Action] COMPLETE TASK - Fix Wiring"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 3,
+  "timestamp": "2026-04-24 14:38:03.807744",
+  "player": {
+    "name": "Player 1: lime",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Electrical"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "06adb8d2103eb184e9d490fe107e3de735fb0830397997c8bcee284dd919e777"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 1: lime. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Completing the Fix Wiring task is my immediate priority as it is a common task that benefits the entire crew and moves us closer to victory. I am currently surrounded by players green and blue, which provides a level of safety in case an Impostor tries to make a move. By completing my task, I can also maintain my credibility among the other players. Once I finish this task, I can consider my next move, whether it is to move towards the next task or gather more information.",
+      "All Info": "Game Time: 2/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Electrical\nPlayers in Electrical: Player 1: lime, Player 2: green, Player 6: blue\n\nObservation history:\n1. Timestep 1: [task] Player 2: green MOVE from Admin to Electrical\n2. Timestep 1: [task] Player 6: blue MOVE from Admin to Electrical\n3. Timestep 2: [task] Player 2: green Seemingly doing task\n4. Timestep 2: [task] Player 6: blue Seemingly doing task\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\nTimestep 2: [task phase] COMPLETE TASK - Fix Wiring\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) [completed]\nPath: You are already at the task location.\n2. short: Accept Diverted Power (Navigation) \nPath: Electrical->Storage->Shields->Navigation\n3. long: Empty Chute (O2) \nPath: Electrical->Admin->O2\n\nAvailable actions:\n1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in Electrical with players green and blue. I need to complete my assigned task, Fix Wiring, which I can start immediately since I'm at the task location. Moving away would delay task completion.",
+      "Alive Players": [
+        "Electrical"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Electrical, having just completed the Fix Wiring task. I am with players green and blue, which provides safety. My next tasks are to Accept Diverted Power in Navigation or Empty Chute in O2.",
+      "Thinking Process": {
+        "thought": "Having completed my immediate task, my next step should focus on efficiently completing my remaining tasks while maintaining safety in numbers. Since I am currently in Electrical, I can move to either Storage, Admin, or Lower Engine. Moving to Storage seems to be the most strategic as it allows me to head towards Navigation for my next task without backtracking. It also keeps me near other players, minimizing the risk of an Impostor attack. I will prioritize moving to Storage next.",
+        "action": "MOVE from Electrical to Storage"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Electrical, having just completed the Fix Wiring task. I am with players green and blue, which provides safety. My next tasks are to Accept Diverted Power in Navigation or Empty Chute in O2.\n\n[Thinking Process]\nHaving completed my immediate task, my next step should focus on efficiently completing my remaining tasks while maintaining safety in numbers. Since I am currently in Electrical, I can move to either Storage, Admin, or Lower Engine. Moving to Storage seems to be the most strategic as it allows me to head towards Navigation for my next task without backtracking. It also keeps me near other players, minimizing the risk of an Impostor attack. I will prioritize moving to Storage next.\n\n[Action] MOVE from Electrical to Storage"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 3,
+  "timestamp": "2026-04-24 14:38:06.198706",
+  "player": {
+    "name": "Player 2: green",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Electrical"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "7aea9bbf55833ea174fbcd01b1df86f02b02eb5d23787e37111186d593623f6c"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 2: green. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Since I am currently in Electrical and my assigned task is to Fix Wiring, it would be most efficient to COMPLETE TASK next. This will allow me to make progress towards completing my tasks while still keeping an eye on the actions of Players 1 and 6. If I complete the task, I can then assess whether to move to another location or keep an eye on the other players for any suspicious behavior.",
+      "All Info": "Game Time: 3/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Electrical\nPlayers in Electrical: Player 2: green, Player 6: blue\n\nObservation history:\n1. Timestep 1: [task] Player 6: blue MOVE from Admin to Electrical\n2. Timestep 2: [task] Player 1: lime Seemingly doing task\n3. Timestep 2: [task] Player 6: blue Seemingly doing task\n4. Timestep 3: [task] Player 1: lime MOVE from Electrical to Storage\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\nTimestep 2: [task phase] COMPLETE TASK - Fix Wiring\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) [completed]\nPath: You are already at the task location.\n2. short: Accept Diverted Power (O2) \nPath: Electrical->Admin->O2\n3. long: Align Engine Output (Lower Engine) \nPath: Electrical->Lower Engine\n\nAvailable actions:\n1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in Electrical with Players 1 (lime) and 6 (blue). Player 1 was observed seemingly doing a task. I have moved from Admin to Electrical and have not witnessed any kills. My assigned task of Fix Wiring is in progress.",
+      "Alive Players": [
+        "Electrical"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "Currently in Electrical with Players 1 (lime) and 6 (blue). Player 1 was observed seemingly doing a task. I have moved from Admin to Electrical and have not witnessed any kills. My assigned task of Fix Wiring is completed.",
+      "Thinking Process": {
+        "thought": "Since I have already completed my task in Electrical, I need to decide where to move next to either complete another task or gather more information. I could move to Admin, where I might find Player 1 or Player 6 and see what they are doing. Alternatively, I could move to Lower Engine to start the next task, Align Engine Output. However, moving to Admin might allow me to keep an eye on the other players and their actions, which could help identify any suspicious behavior.",
+        "action": "MOVE from Electrical to Admin FINAL_ACTION_INDEX: 2"
+      }
+    },
+    "full_response": "[Condensed Memory]  \nCurrently in Electrical with Players 1 (lime) and 6 (blue). Player 1 was observed seemingly doing a task. I have moved from Admin to Electrical and have not witnessed any kills. My assigned task of Fix Wiring is completed.\n\n[Thinking Process]  \nSince I have already completed my task in Electrical, I need to decide where to move next to either complete another task or gather more information. I could move to Admin, where I might find Player 1 or Player 6 and see what they are doing. Alternatively, I could move to Lower Engine to start the next task, Align Engine Output. However, moving to Admin might allow me to keep an eye on the other players and their actions, which could help identify any suspicious behavior.\n\n[Action] MOVE from Electrical to Admin  \nFINAL_ACTION_INDEX: 2"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 3,
+  "timestamp": "2026-04-24 14:38:12.346652",
+  "player": {
+    "name": "Player 4: black",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "homosapiens/brain-1.0",
+    "location": "Security"
+  },
+  "interaction": {
+    "system_prompt": "Human Agent (Web)",
+    "prompt": {
+      "All Info": "Game Time: 3/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Security\nPlayers in Security: Player 4: black\n\nObservation history:\n1. Timestep 0: [task] Player 7: pink MOVE from Cafeteria to Upper Engine\n2. Timestep 1: [task] Player 7: pink MOVE from Upper Engine to Security\n3. Monitor Record: {Location: Admin, Observation: {No one here}}\n4. Timestep 2: [task] Player 7: pink MOVE from Security to Upper Engine\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Upper Engine\nTimestep 1: [task phase] MOVE from Upper Engine to Security\nTimestep 2: [task phase] VIEW MONITOR\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) \nPath: Security->Lower Engine->Electrical\n2. short: Prime Shields (Shields) \nPath: Security->Lower Engine->Storage->Shields\n3. long: Empty Garbage (Cafeteria) \nPath: Security->Upper Engine->Cafeteria\n\nAvailable actions:\n1. MOVE from Security to Lower Engine\n2. MOVE from Security to Reactor\n3. MOVE from Security to Upper Engine\n4. VIEW MONITOR\n",
+      "Available Actions": "1: MOVE from Security to Lower Engine\n2: MOVE from Security to Reactor\n3: MOVE from Security to Upper Engine\n4: VIEW MONITOR",
+      "Current Step": "3/50",
+      "Current Player": "Player 4: black"
+    },
+    "response": {
+      "Condensed Memory": "",
+      "Thinking Process": "",
+      "Action": "VIEW MONITOR @ Electrical"
+    },
+    "full_response": "[Action] VIEW MONITOR @ Electrical"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 3,
+  "timestamp": "2026-04-24 14:38:15.003396",
+  "player": {
+    "name": "Player 6: blue",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Electrical"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "f1c9b0c303a174058e08775193882952ae342d7f2901def6f41b4cefbc4e0168"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 6: blue. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Given the urgency of the situation, it is essential to complete my tasks while also keeping an eye on the suspected Impostor, Player 3. Since I am already in Electrical and with other Crewmates, completing the Fix Wiring task is the most logical action. This will not only progress our overall task completion but also keep me in a safe area with witnesses. After completing the task, I can plan my next move based on the dynamics and discussions that arise in the next phase.",
+      "All Info": "Game Time: 3/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Electrical\nPlayers in Electrical: Player 6: blue\n\nObservation history:\n1. Timestep 1: [task] Player 3: cyan KILL Player 5: orange\n2. Timestep 2: [task] Player 1: lime Seemingly doing task\n3. Timestep 2: [task] Player 2: green Seemingly doing task\n4. Timestep 3: [task] Player 1: lime MOVE from Electrical to Storage\n5. Timestep 3: [task] Player 2: green MOVE from Electrical to Admin\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\nTimestep 2: [task phase] COMPLETE TASK - Fix Wiring\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) [completed]\nPath: You are already at the task location.\n2. short: Download Data (Navigation) \nPath: Electrical->Storage->Shields->Navigation\n3. long: Empty Chute (Storage) \nPath: Electrical->Storage\n\nAvailable actions:\n1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine\n",
+      "Structured Evidence": "Witnessed kills (highest-priority evidence):\n1. Timestep 1: Player 3: cyan KILL Player 5: orange",
+      "Memory": "I am currently in Electrical with Players 1 (lime) and 2 (green). I previously witnessed Player 3 (cyan) kill Player 5 (orange). It is crucial to complete my assigned task, Fix Wiring, while maintaining a presence with other players to ensure safety.",
+      "Alive Players": [
+        "Electrical"
+      ],
+      "Eliminated Players (Inferred)": [
+        "Player 5: orange"
+      ],
+      "Available Actions (Indexed)": "1. MOVE from Electrical to Storage\n2. MOVE from Electrical to Admin\n3. MOVE from Electrical to Lower Engine",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Electrical with Players 1 (lime) and 2 (green). I witnessed Player 3 (cyan) kill Player 5 (orange). I have completed the Fix Wiring task and need to move towards my next task while ensuring I stay with other players for safety.",
+      "Thinking Process": {
+        "thought": "Since I have completed my task in Electrical, I need to decide on my next move. My options are to move to Storage, Admin, or Lower Engine. Moving to Storage would be a strategic choice as it allows me to proceed towards my next task (Empty Chute) while remaining in the vicinity of other players. Additionally, I can keep an eye on Player 3 (cyan) if they attempt to move through or near Storage. This will also allow me to gather more information about Player 3's behavior and potentially confirm suspicions during the next meeting phase.",
+        "action": "MOVE from Electrical to Storage FINAL_ACTION_INDEX: 1"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Electrical with Players 1 (lime) and 2 (green). I witnessed Player 3 (cyan) kill Player 5 (orange). I have completed the Fix Wiring task and need to move towards my next task while ensuring I stay with other players for safety.\n\n[Thinking Process]\nSince I have completed my task in Electrical, I need to decide on my next move. My options are to move to Storage, Admin, or Lower Engine. Moving to Storage would be a strategic choice as it allows me to proceed towards my next task (Empty Chute) while remaining in the vicinity of other players. Additionally, I can keep an eye on Player 3 (cyan) if they attempt to move through or near Storage. This will also allow me to gather more information about Player 3's behavior and potentially confirm suspicions during the next meeting phase.\n\n[Action] MOVE from Electrical to Storage \nFINAL_ACTION_INDEX: 1"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 4,
+  "timestamp": "2026-04-24 14:38:18.354132",
+  "player": {
+    "name": "Player 1: lime",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Storage"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "06adb8d2103eb184e9d490fe107e3de735fb0830397997c8bcee284dd919e777"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 1: lime. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Having completed my immediate task, my next step should focus on efficiently completing my remaining tasks while maintaining safety in numbers. Since I am currently in Electrical, I can move to either Storage, Admin, or Lower Engine. Moving to Storage seems to be the most strategic as it allows me to head towards Navigation for my next task without backtracking. It also keeps me near other players, minimizing the risk of an Impostor attack. I will prioritize moving to Storage next.",
+      "All Info": "Game Time: 3/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Storage\nPlayers in Storage: Player 1: lime, Player 6: blue\n\nObservation history:\n1. Timestep 1: [task] Player 6: blue MOVE from Admin to Electrical\n2. Timestep 2: [task] Player 2: green Seemingly doing task\n3. Timestep 2: [task] Player 6: blue Seemingly doing task\n4. Timestep 3: [task] Player 6: blue MOVE from Electrical to Storage\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\nTimestep 2: [task phase] COMPLETE TASK - Fix Wiring\nTimestep 3: [task phase] MOVE from Electrical to Storage\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) [completed]\nPath: Storage->Electrical\n2. short: Accept Diverted Power (Navigation) \nPath: Storage->Shields->Navigation\n3. long: Empty Chute (O2) \nPath: Storage->Shields->O2\n\nAvailable actions:\n1. MOVE from Storage to Shields\n2. MOVE from Storage to Communications\n3. MOVE from Storage to Admin\n4. MOVE from Storage to Electrical\n5. MOVE from Storage to Lower Engine\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "I am currently in Electrical, having just completed the Fix Wiring task. I am with players green and blue, which provides safety. My next tasks are to Accept Diverted Power in Navigation or Empty Chute in O2.",
+      "Alive Players": [
+        "Storage"
+      ],
+      "Eliminated Players (Inferred)": [],
+      "Available Actions (Indexed)": "1. MOVE from Storage to Shields\n2. MOVE from Storage to Communications\n3. MOVE from Storage to Admin\n4. MOVE from Storage to Electrical\n5. MOVE from Storage to Lower Engine",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Storage with Player 6: blue. I have completed the Fix Wiring task and need to complete the Accept Diverted Power task in Navigation or Empty Chute task in O2. Moving to Shields next will allow me to proceed efficiently toward Navigation while staying in proximity to other players for safety.",
+      "Thinking Process": {
+        "thought": "Since I am in a room with another player, I can feel somewhat safe from potential attacks. My immediate goal is to continue completing my tasks while maintaining a strategic position. Moving to Shields keeps me on course to navigate to my next tasks without backtracking. This action also keeps me near another player, which decreases the likelihood of an Impostor attack.",
+        "action": "MOVE from Storage to Shields FINAL_ACTION_INDEX: 1"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Storage with Player 6: blue. I have completed the Fix Wiring task and need to complete the Accept Diverted Power task in Navigation or Empty Chute task in O2. Moving to Shields next will allow me to proceed efficiently toward Navigation while staying in proximity to other players for safety.\n\n[Thinking Process]\nSince I am in a room with another player, I can feel somewhat safe from potential attacks. My immediate goal is to continue completing my tasks while maintaining a strategic position. Moving to Shields keeps me on course to navigate to my next tasks without backtracking. This action also keeps me near another player, which decreases the likelihood of an Impostor attack. \n\n[Action] MOVE from Storage to Shields\n\nFINAL_ACTION_INDEX: 1"
+  }
+}
+{
+  "game_index": "Game 2",
+  "step": 4,
+  "timestamp": "2026-04-24 14:38:23.119024",
+  "player": {
+    "name": "Player 2: green",
+    "identity": "Crewmate",
+    "personality": null,
+    "model": "openai/gpt-4o-mini",
+    "location": "Admin"
+  },
+  "prompt_config": {
+    "prompt_profile": "baseline_v1",
+    "aggression_level": 3,
+    "system_prompt_hash": "7aea9bbf55833ea174fbcd01b1df86f02b02eb5d23787e37111186d593623f6c"
+  },
+  "interaction": {
+    "system_prompt": "\nYou are Player 2: green. You are a Crewmate on the spaceship Skeld. Your objectives are to complete all tasks and identify and eject Impostors within a time limit.\n## IMPORTANT ## Impostors are those who KILL Crewmates, and if they outnumber crewmates at any point before all tasks are completed, you lose. They also can VENT between non-connected rooms. Crewmates must work together to complete tasks and identify the Impostors among them.\nThe game alternates between task and meeting phases:\n- During the task phase, you perform your assigned tasks by choosing COMPLETE TASK or gathering evidence by moving around. You can also CALL MEETING if you suspect an Impostor or witness a crime. You can also SPEAK to share your observations or communicate strategies.\n- During the meeting phase, players can only speak. Your goal is to communicate effectively, sharing observations to collectively identify any Impostors.\n\nMap Configuration of the Skeld:\nRooms and Features\nCafeteria: Vent to Admin, Special (Emergency Button).\nWeapons: Vent to Navigation.\nNavigation: Vent to Shields and Weapons.\nO2: Nothing Special\nShields: Vent to Navigation.\nCommunications: Nothing Special\nStorage: Nothing Special\nAdmin: Vent to Cafeteria\nElectrical: Vent to Medbay and Security\nLower Engine: Vent to Reactor\nSecurity: Special (Security Cameras)\nReactor: Vent to Upper Engine and Lower Engine\nUpper Engine: Vent to Reactor\nMedbay: Vent to Electrical and Security\n\nNote that only Impostors can KILL and VENT.\n\nWhen presented with a list of available actions (e.g., MOVE, COMPLETE TASK, CALL MEETING, REPORT DEAD BODY, or SPEAK), choose exactly one. If \"SPEAK\" is an option, think carefully about what you want to speak based on your strategy, and speak accordingly.\nMake a summarization of the past observed events and taken actions under [Condensed Memory], make a thoughtful and thourough plan under [Thinking Process] while thinking very carefully about the strategy you want to employ to win, and then choose the action from Available actions under [Action].\n\nOutput format:\n[Condensed Memory]\n{memory}\n[Thinking Process]\n{thought}\n[Action] {action}\n\nDO NOT PICK AN ACTION THAT IS NOT IN THE LIST OF AVAILABLE ACTIONS AND MAKE SURE TO FOLLOW THE EXACT OUTPUT FORMAT.\n",
+    "prompt": {
+      "Summarization": "Since I have already completed my task in Electrical, I need to decide where to move next to either complete another task or gather more information. I could move to Admin, where I might find Player 1 or Player 6 and see what they are doing. Alternatively, I could move to Lower Engine to start the next task, Align Engine Output. However, moving to Admin might allow me to keep an eye on the other players and their actions, which could help identify any suspicious behavior.",
+      "All Info": "Game Time: 4/50\nCurrent phase: Task phase\nIn this phase, Crewmates should try to complete all tasks or try to identify the Impostor. Impostor should try to kill Crewmates before they finish all the tasks. The game runs sequentially, so other players in the room with you can observe your actions and act accordingly.\n\nCurrent Location: Admin\nPlayers in Admin: Player 2: green, Player 5: orange (dead)\n\nObservation history:\n1. Timestep 1: [task] Player 6: blue MOVE from Admin to Electrical\n2. Timestep 2: [task] Player 1: lime Seemingly doing task\n3. Timestep 2: [task] Player 6: blue Seemingly doing task\n4. Timestep 3: [task] Player 1: lime MOVE from Electrical to Storage\n\nAction history:\nTimestep 0: [task phase] MOVE from Cafeteria to Admin\nTimestep 1: [task phase] MOVE from Admin to Electrical\nTimestep 2: [task phase] COMPLETE TASK - Fix Wiring\nTimestep 3: [task phase] MOVE from Electrical to Admin\n\nYour Assigned Tasks:\n1. common: Fix Wiring (Electrical) [completed]\nPath: Admin->Electrical\n2. short: Accept Diverted Power (O2) \nPath: Admin->O2\n3. long: Align Engine Output (Lower Engine) \nPath: Admin->Storage->Lower Engine\n\nAvailable actions:\n1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical\n5. REPORT DEAD BODY at Admin\n",
+      "Structured Evidence": "Witnessed kills: none",
+      "Memory": "Currently in Electrical with Players 1 (lime) and 6 (blue). Player 1 was observed seemingly doing a task. I have moved from Admin to Electrical and have not witnessed any kills. My assigned task of Fix Wiring is completed.",
+      "Alive Players": [
+        "Admin"
+      ],
+      "Eliminated Players (Inferred)": [
+        "Player 5: orange"
+      ],
+      "Available Actions (Indexed)": "1. MOVE from Admin to Cafeteria\n2. MOVE from Admin to O2\n3. MOVE from Admin to Storage\n4. MOVE from Admin to Electrical\n5. REPORT DEAD BODY at Admin",
+      "Phase": "Task phase",
+      "Prompt Profile": "baseline_v1",
+      "Aggression Level": 3,
+      "Hard Rule": ""
+    },
+    "response": {
+      "Condensed Memory": "I am currently in Admin, where I have just completed my task of Fix Wiring in Electrical. I observed Player 1 (lime) and Player 6 (blue) seemingly completing their tasks in Electrical. Player 5 (orange) is dead. I need to decide whether to move to O2 to complete my next task or to Storage to start Align Engine Output.",
+      "Thinking Process": {
+        "thought": "Since I have already completed my task and I am in Admin, I have the option to gather more information or continue completing my tasks. Moving to O2 would allow me to complete my next task, Accept Diverted Power, but it might be more beneficial to stay in Admin for a moment to see if any other players enter or exit. However, I believe it is important to start working on my tasks as we are on a timer. As there is no body to report, I should prioritize moving to O2 to ensure I stay productive and complete my tasks.",
+        "action": "MOVE from Admin to O2 FINAL_ACTION_INDEX: 2"
+      }
+    },
+    "full_response": "[Condensed Memory]\nI am currently in Admin, where I have just completed my task of Fix Wiring in Electrical. I observed Player 1 (lime) and Player 6 (blue) seemingly completing their tasks in Electrical. Player 5 (orange) is dead. I need to decide whether to move to O2 to complete my next task or to Storage to start Align Engine Output.\n\n[Thinking Process]\nSince I have already completed my task and I am in Admin, I have the option to gather more information or continue completing my tasks. Moving to O2 would allow me to complete my next task, Accept Diverted Power, but it might be more beneficial to stay in Admin for a moment to see if any other players enter or exit. However, I believe it is important to start working on my tasks as we are on a timer. As there is no body to report, I should prioritize moving to O2 to ensure I stay productive and complete my tasks.\n\n[Action] MOVE from Admin to O2\nFINAL_ACTION_INDEX: 2"
+  }
+}

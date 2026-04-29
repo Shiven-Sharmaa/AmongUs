@@ -43,11 +43,13 @@ if os.getenv("FLY_APP_NAME") and not os.getenv("BACKEND_API_KEY"):
 class CreateGameRequest(BaseModel):
     crewmate_model: Optional[str] = None
     impostor_model: Optional[str] = None
+    human_role: Optional[str] = None  # "crewmate" | "impostor" | "random" | None
 
 
 class CreateGameResponse(BaseModel):
     game_id: int
     status: str
+    human_role: str  # resolved role that was actually applied
 
 
 class HumanActionRequest(BaseModel):
@@ -81,15 +83,16 @@ async def create_game(
     _: None = Depends(require_api_key),
 ) -> CreateGameResponse:
     try:
-        game_id = await manager.create_game(
+        game_id, resolved_role = await manager.create_game(
             crewmate_model=request.crewmate_model,
             impostor_model=request.impostor_model,
+            human_role=request.human_role,
         )
     except CapacityError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return CreateGameResponse(game_id=game_id, status="running")
+    return CreateGameResponse(game_id=game_id, status="running", human_role=resolved_role)
 
 
 @app.get("/game_state")

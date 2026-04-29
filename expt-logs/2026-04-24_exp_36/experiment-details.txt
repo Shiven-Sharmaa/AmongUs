@@ -1,0 +1,8 @@
+Experiment C:\Users\shiven\Desktop\AmongUs\expt-logs\2026-04-24_exp_36
+Date: 2026-04-24
+Commit: 1173926f869f7ba321c4baa49c75d4b2682d4857
+Experiment args: {'game_config': {'num_players': 7, 'num_impostors': 2, 'num_common_tasks': 1, 'num_short_tasks': 1, 'num_long_tasks': 1, 'discussion_rounds': 3, 'max_num_buttons': 2, 'kill_cooldown': 3, 'max_timesteps': 50}, 'include_human': True, 'test': False, 'personality': False, 'agent_config': {'Impostor': 'LLM', 'Crewmate': 'LLM', 'IMPOSTOR_LLM_CHOICES': ['openai/gpt-4o-mini'], 'CREWMATE_LLM_CHOICES': ['openai/gpt-4o-mini']}, 'UI': False}
+Tournament meta: id=tourn_v1, cell=H_IMP_FRONTIER, run_label=RUN_0020, human_role=
+Model env: crewmate=openai/gpt-4o-mini, impostor=openai/gpt-4o-mini, timeout=60
+Path of executable file: C:\Users\shiven\Desktop\AmongUs\utils.py
+Experiment index: 36

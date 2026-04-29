@@ -12,6 +12,11 @@
       <header class="app-header">
         <h1>AmongUs Visual Client</h1>
         <div class="header-actions">
+          <select id="role-select" class="role-select" title="Human player role">
+            <option value="random">Role: Random</option>
+            <option value="crewmate">Role: Crewmate</option>
+            <option value="impostor">Role: Impostor</option>
+          </select>
           <button id="create-game-btn" type="button">Create Game</button>
           <div id="create-status" class="muted">No game created.</div>
           <button id="sound-toggle-btn" type="button" class="sound-btn">Sound: On</button>
@@ -28,6 +33,39 @@
         <section class="panel map-panel">
           <h2>Ship Layout</h2>
           <div id="map-grid" class="map-grid"></div>
+          <div id="mission-brief-panel" class="mission-brief-inline">
+            <div class="map-bottom-tabs">
+              <button id="tab-map-brief" class="map-bottom-tab active" type="button">Mission Brief</button>
+              <button id="tab-map-monitor" class="map-bottom-tab" type="button">Monitor</button>
+            </div>
+            <div id="panel-map-brief">
+              <pre id="mission-brief" class="brief-output">No mission briefing captured yet.</pre>
+            </div>
+            <div id="panel-map-monitor" class="hidden">
+              <div id="monitor-feed" class="monitor-feed">No monitor results yet. Go to Security and use VIEW MONITOR.</div>
+            </div>
+          </div>
+
+          <section id="log-view" class="log-panel hidden">
+            <h2>Player Journal</h2>
+            <div class="journal-tabs" role="tablist" aria-label="Player journal tabs">
+              <button id="tab-live-logs" class="journal-tab active" type="button" data-tab="live-logs">Live Logs</button>
+              <button id="tab-notes" class="journal-tab" type="button" data-tab="notes">Notes</button>
+            </div>
+
+            <div id="panel-live-logs" class="journal-panel">
+              <div id="latest-log" class="log-output">No visible events yet.</div>
+            </div>
+
+            <div id="panel-notes" class="journal-panel hidden">
+              <label for="notes-box"><strong>Private Notes</strong></label>
+              <textarea
+                id="notes-box"
+                class="notes-box"
+                placeholder="Write down suspects, alibis, timelines, and task confirmations..."
+              ></textarea>
+            </div>
+          </section>
         </section>
 
         <aside class="panel sidebar-panel">
@@ -73,7 +111,7 @@
           <section id="task-panel" class="task-panel">
             <h3>Task Activity</h3>
             <div class="task-progress-stack">
-              <div class="task-progress-group">
+              <div id="human-task-bar-group" class="task-progress-group">
                 <div class="task-progress-header">
                   <span>Your Tasks</span>
                   <span id="human-task-progress-text">-</span>
@@ -82,9 +120,9 @@
                   <div id="human-task-progress-fill" class="task-progress-fill human"></div>
                 </div>
               </div>
-              <div class="task-progress-group">
+              <div id="global-task-bar-group" class="task-progress-group hidden">
                 <div class="task-progress-header">
-                  <span>Global Tasks</span>
+                  <span>Crew Tasks (Global)</span>
                   <span id="global-task-progress-text">-</span>
                 </div>
                 <div class="task-progress-track">
@@ -95,34 +133,30 @@
             <div id="task-feed" class="task-feed">No task actions yet.</div>
           </section>
 
+          <section id="crewmate-tasks-panel" class="task-panel">
+            <h3>My Remaining Tasks</h3>
+            <div id="human-tasks-list" class="human-tasks-list">-</div>
+          </section>
+
+          <section id="impostor-panel" class="task-panel hidden">
+            <h3>Impostor</h3>
+            <div class="kill-cooldown-row">
+              <span class="kill-cooldown-label">Kill Cooldown</span>
+              <span id="kill-cooldown-value" class="kill-cooldown-value">-</span>
+            </div>
+          </section>
+
         </aside>
       </main>
 
-      <section id="log-view" class="panel log-panel hidden">
-        <h2>Player Journal</h2>
-        <div class="journal-tabs" role="tablist" aria-label="Player journal tabs">
-          <button id="tab-live-logs" class="journal-tab active" type="button" data-tab="live-logs">Live Logs</button>
-          <button id="tab-mission-brief" class="journal-tab" type="button" data-tab="mission-brief">Mission Brief</button>
-          <button id="tab-notes" class="journal-tab" type="button" data-tab="notes">Notes</button>
+      <div id="game-over-modal" class="game-over-modal hidden" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
+        <div class="game-over-backdrop"></div>
+        <div class="game-over-content">
+          <h2 id="game-over-title" class="game-over-title">Game Over</h2>
+          <p id="game-over-reason" class="game-over-reason"></p>
+          <button id="game-over-close-btn" type="button" class="game-over-close-btn">Dismiss</button>
         </div>
-
-        <div id="panel-live-logs" class="journal-panel">
-          <div id="latest-log" class="log-output">No visible events yet.</div>
-        </div>
-
-        <div id="panel-mission-brief" class="journal-panel hidden">
-          <pre id="mission-brief" class="brief-output">No mission briefing captured yet.</pre>
-        </div>
-
-        <div id="panel-notes" class="journal-panel hidden">
-          <label for="notes-box"><strong>Private Notes</strong></label>
-          <textarea
-            id="notes-box"
-            class="notes-box"
-            placeholder="Write down suspects, alibis, timelines, and task confirmations..."
-          ></textarea>
-        </div>
-      </section>
+      </div>
 
       <section id="faq-panel" class="panel faq-bottom-panel">
         <h2>Quick FAQ</h2>
@@ -132,8 +166,8 @@
             <p>You can report only if an unreported dead body is in your current room and a report-type action appears in Available Actions.</p>
           </details>
           <details>
-            <summary>Why is REPORT DEAD BODY sometimes missing in Cafeteria?</summary>
-            <p>Current game logic may show only CALL MEETING in Cafeteria, even if a body is present.</p>
+            <summary>Why does the button say "Report Body" instead of "Call Meeting" in Cafeteria?</summary>
+            <p>If an unreported dead body is present in your room (including Cafeteria), the action changes to REPORT DEAD BODY, taking priority over the emergency button.</p>
           </details>
           <details>
             <summary>Can I see who killed a player?</summary>
@@ -195,7 +229,7 @@
       </section>
     </div>
 
-    <script src="/web/config.js"></script>
-    <script src="/web/app.js"></script>
+    <script src="/web/config.js?v=9"></script>
+    <script src="/web/app.js?v=9"></script>
   </body>
 </html>

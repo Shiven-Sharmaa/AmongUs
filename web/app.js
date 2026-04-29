@@ -25,6 +25,7 @@ let missionBriefCaptured = false;
 const hiddenAliasByName = new Map();
 let hiddenAliasCounter = 1;
 let previousPhase = null;
+const knownImpostorTeammates = new Set();
 
 const ROOM_ORDER = [
   "Cafeteria",
@@ -48,11 +49,11 @@ const ROOM_COORDS = {
   Cafeteria: { x: 52, y: 17 },
   Weapons: { x: 76, y: 29 },
   Navigation: { x: 91, y: 45 },
-  O2: { x: 66, y: 45 },
+  O2: { x: 69, y: 43 },
   Shields: { x: 79, y: 73 },
   Communications: { x: 64, y: 87 },
   Storage: { x: 49, y: 64 },
-  Admin: { x: 63, y: 53 },
+  Admin: { x: 51, y: 51 },
   Electrical: { x: 35, y: 61 },
   "Lower Engine": { x: 14, y: 74 },
   Security: { x: 22, y: 52 },
@@ -107,6 +108,7 @@ const COLOR_MAP = {
 
 const createGameBtn = document.getElementById("create-game-btn");
 const createStatus = document.getElementById("create-status");
+const roleSelectEl = document.getElementById("role-select");
 const winnerBannerEl = document.getElementById("winner-banner");
 const soundToggleBtn = document.getElementById("sound-toggle-btn");
 const soundVolumeEl = document.getElementById("sound-volume");
@@ -129,11 +131,24 @@ const notesBoxEl = document.getElementById("notes-box");
 const roleBannerEl = document.getElementById("role-banner");
 
 const tabLiveLogsBtn = document.getElementById("tab-live-logs");
-const tabMissionBriefBtn = document.getElementById("tab-mission-brief");
 const tabNotesBtn = document.getElementById("tab-notes");
 const panelLiveLogsEl = document.getElementById("panel-live-logs");
-const panelMissionBriefEl = document.getElementById("panel-mission-brief");
 const panelNotesEl = document.getElementById("panel-notes");
+const monitorFeedEl = document.getElementById("monitor-feed");
+const missionBriefPanelEl = document.getElementById("mission-brief-panel");
+const tabMapBriefBtn = document.getElementById("tab-map-brief");
+const tabMapMonitorBtn = document.getElementById("tab-map-monitor");
+const panelMapBriefEl = document.getElementById("panel-map-brief");
+const panelMapMonitorEl = document.getElementById("panel-map-monitor");
+const globalTaskBarGroupEl = document.getElementById("global-task-bar-group");
+const globalTaskProgressTextEl = document.getElementById("global-task-progress-text");
+const globalTaskProgressFillEl = document.getElementById("global-task-progress-fill");
+const humanTaskBarGroupEl = document.getElementById("human-task-bar-group");
+
+const gameOverModalEl = document.getElementById("game-over-modal");
+const gameOverReasonEl = document.getElementById("game-over-reason");
+const gameOverCloseBtn = document.getElementById("game-over-close-btn");
+let gameOverModalShown = false;
 
 const speechBox = document.getElementById("speech-box");
 const speechTextInput = document.getElementById("speech-text");
@@ -147,8 +162,10 @@ const meetingFeed = document.getElementById("meeting-feed");
 const taskFeed = document.getElementById("task-feed");
 const humanTaskProgressTextEl = document.getElementById("human-task-progress-text");
 const humanTaskProgressFillEl = document.getElementById("human-task-progress-fill");
-const globalTaskProgressTextEl = document.getElementById("global-task-progress-text");
-const globalTaskProgressFillEl = document.getElementById("global-task-progress-fill");
+const humanTasksListEl = document.getElementById("human-tasks-list");
+const crewmateTasksListEl = document.getElementById("crewmate-tasks-list");
+const impostorPanelEl = document.getElementById("impostor-panel");
+const killCooldownValueEl = document.getElementById("kill-cooldown-value");
 const seenTaskEvents = new Set();
 const PLAYER_NOTES_STORAGE_KEY = "amongus_player_notes";
 const API_BASE_STORAGE_KEY = "amongus_api_base_url";
@@ -335,6 +352,10 @@ function loadSoundPrefs() {
   }
 }
 
+function setGameActive(active) {
+  if (roleSelectEl) roleSelectEl.classList.toggle("hidden", active);
+}
+
 function showError(message) {
   errorBanner.textContent = message;
   errorBanner.classList.remove("hidden");
@@ -346,25 +367,29 @@ function clearError() {
 }
 
 function setActiveJournalTab(tabName) {
-  const tabs = [tabLiveLogsBtn, tabMissionBriefBtn, tabNotesBtn];
-  tabs.forEach((tab) => tab.classList.remove("active"));
+  [tabLiveLogsBtn, tabNotesBtn].forEach((t) => t && t.classList.remove("active"));
   panelLiveLogsEl.classList.add("hidden");
-  panelMissionBriefEl.classList.add("hidden");
   panelNotesEl.classList.add("hidden");
-
-  if (tabName === "mission-brief") {
-    tabMissionBriefBtn.classList.add("active");
-    panelMissionBriefEl.classList.remove("hidden");
-    return;
-  }
   if (tabName === "notes") {
     tabNotesBtn.classList.add("active");
     panelNotesEl.classList.remove("hidden");
     return;
   }
-
   tabLiveLogsBtn.classList.add("active");
   panelLiveLogsEl.classList.remove("hidden");
+}
+
+function setActiveMapTab(tabName) {
+  [tabMapBriefBtn, tabMapMonitorBtn].forEach((t) => t && t.classList.remove("active"));
+  if (panelMapBriefEl) panelMapBriefEl.classList.add("hidden");
+  if (panelMapMonitorEl) panelMapMonitorEl.classList.add("hidden");
+  if (tabName === "monitor") {
+    if (tabMapMonitorBtn) tabMapMonitorBtn.classList.add("active");
+    if (panelMapMonitorEl) panelMapMonitorEl.classList.remove("hidden");
+    return;
+  }
+  if (tabMapBriefBtn) tabMapBriefBtn.classList.add("active");
+  if (panelMapBriefEl) panelMapBriefEl.classList.remove("hidden");
 }
 
 function loadNotes() {
@@ -627,6 +652,8 @@ function styleToken(token, record) {
     token.textContent = "?";
   }
   setHumanTag(token, record.isHuman && (record.isVisible || record.name === record.displayName));
+  const isTeammate = knownImpostorTeammates.has(record.name);
+  token.classList.toggle("impostor-teammate", isTeammate);
 }
 
 function moveTokenToRoom(playerName, roomName) {
@@ -785,7 +812,28 @@ function updateMap(previous, current) {
   lastActiveRoom = activeRoom;
 }
 
+function isHumanPlayerDead(current) {
+  const humanName = current.human_player_name;
+  if (!humanName) return false;
+  const positions = Array.isArray(current.player_positions) ? current.player_positions : [];
+  const entry = positions.find((p) => p.name === humanName);
+  return entry ? entry.is_alive === false : false;
+}
+
 function renderActionButtons(current) {
+  const humanDead = isHumanPlayerDead(current);
+  if (humanDead) {
+    clearActionButtons();
+    hideSpeechInput();
+    waitingMessageEl.textContent =
+      "You have been eliminated. Please keep this tab open until the game finishes.";
+    waitingMessageEl.classList.add("eliminated-msg");
+    lastIsHumanTurn = false;
+    lastActionSignature = "";
+    return;
+  }
+  waitingMessageEl.classList.remove("eliminated-msg");
+
   const actions = Array.isArray(current.available_actions) ? current.available_actions : [];
   const actionSignature = buildActionSignature(actions);
   const turnChanged = lastIsHumanTurn !== current.is_human_turn;
@@ -801,6 +849,10 @@ function renderActionButtons(current) {
     setActionButtonsEnabled(current.is_human_turn && !actionSubmitInFlight);
     return;
   }
+
+  const prevSelectedActionName = selectedAction ? selectedAction.name : null;
+  const monitorWasOpen = selectedAction && !monitorBox.classList.contains("hidden");
+  const speechWasOpen = selectedAction && !speechBox.classList.contains("hidden");
 
   clearActionButtons();
   hideSpeechInput();
@@ -820,6 +872,27 @@ function renderActionButtons(current) {
     return;
   }
 
+  function openMonitorBox(action) {
+    selectedAction = action;
+    speechBox.classList.add("hidden");
+    monitorBox.classList.remove("hidden");
+    monitorRoomSelect.innerHTML = "";
+    const opts = Array.isArray(action.location_options) && action.location_options.length > 0
+      ? action.location_options
+      : ROOM_ORDER.filter((r) => r !== "Unknown");
+    opts.forEach((room) => {
+      const option = document.createElement("option");
+      option.value = room;
+      option.textContent = room;
+      monitorRoomSelect.appendChild(option);
+    });
+    waitingMessageEl.textContent = "Select a room to monitor, then submit.";
+    if (monitorRoomSelect.options.length > 0) {
+      monitorRoomSelect.selectedIndex = 0;
+    }
+    monitorRoomSelect.focus();
+  }
+
   actions.forEach((action) => {
     const button = document.createElement("button");
     button.type = "button";
@@ -836,30 +909,28 @@ function renderActionButtons(current) {
         waitingMessageEl.textContent = "Enter speech text, then submit.";
         speechTextInput.focus();
       } else if (action.requires_location) {
-        selectedAction = action;
-        speechBox.classList.add("hidden");
-        monitorBox.classList.remove("hidden");
-        monitorRoomSelect.innerHTML = "";
-        const options = Array.isArray(action.location_options)
-          ? action.location_options
-          : [];
-        options.forEach((room) => {
-          const option = document.createElement("option");
-          option.value = room;
-          option.textContent = room;
-          monitorRoomSelect.appendChild(option);
-        });
-        waitingMessageEl.textContent = "Select a room to monitor, then submit.";
-        if (monitorRoomSelect.options.length > 0) {
-          monitorRoomSelect.selectedIndex = 0;
-        }
-        monitorRoomSelect.focus();
+        openMonitorBox(action);
       } else {
         await submitAction(action.index, "", "");
       }
     });
     actionsEl.appendChild(button);
   });
+
+  // Restore monitor/speech box if the same action is still available after a re-render.
+  if (prevSelectedActionName && current.is_human_turn) {
+    const match = actions.find((a) => a.name === prevSelectedActionName);
+    if (match) {
+      if (match.requires_location && monitorWasOpen) {
+        openMonitorBox(match);
+      } else if (match.requires_message && speechWasOpen) {
+        selectedAction = match;
+        speechBox.classList.remove("hidden");
+        monitorBox.classList.add("hidden");
+        waitingMessageEl.textContent = "Enter speech text, then submit.";
+      }
+    }
+  }
 
   lastIsHumanTurn = current.is_human_turn;
   lastActionSignature = actionSignature;
@@ -909,6 +980,16 @@ function updateWinnerBanner(current) {
   winnerBannerEl.textContent = `Game Over - ${winnerText}`;
   winnerBannerEl.classList.remove("hidden");
   winnerBannerEl.classList.add("shown");
+}
+
+function showGameOverModal(current) {
+  if (!gameOverModalEl || gameOverModalShown) {
+    return;
+  }
+  const winnerText = String(current.winner_reason || `Winner: ${current.winner}`);
+  gameOverReasonEl.textContent = winnerText;
+  gameOverModalEl.classList.remove("hidden");
+  gameOverModalShown = true;
 }
 
 function extractNewLogLines(previousInfo, currentInfo) {
@@ -1027,10 +1108,6 @@ function extractMissionBrief(playerInfo, humanIdentity, impostorTeammates = []) 
     }
     lines.push("");
   }
-  if (locationSection) {
-    lines.push(`Current Location: ${locationSection}`);
-    lines.push("");
-  }
   lines.push("Your Assigned Tasks and Suggested Paths:");
   lines.push(tasksSection);
   return lines.join("\n").trim();
@@ -1049,6 +1126,9 @@ function captureMissionBrief(current) {
     return;
   }
   missionBriefEl.textContent = brief;
+  if (missionBriefPanelEl) {
+    missionBriefPanelEl.classList.remove("hidden");
+  }
   missionBriefCaptured = true;
 }
 
@@ -1132,17 +1212,24 @@ function normalizeMeetingText(text) {
 function appendMeetingMessage(message, isHuman) {
   const group = document.createElement("div");
   const isSystem = Boolean(message.system) || message.player === "SYSTEM";
-  group.className = `meeting-group${isHuman ? " human" : ""}${isSystem ? " system" : ""}`;
+  const isTeammate = !isSystem && knownImpostorTeammates.has(message.player);
+  group.className = `meeting-group${isHuman ? " human" : ""}${isSystem ? " system" : ""}${isTeammate ? " impostor-teammate-msg" : ""}`;
   if (!isSystem) {
-    const speakerColor = colorHexFromPlayerName(message.player);
-    group.classList.add("tinted");
-    group.style.setProperty("--player-tint-bg", hexToRgba(speakerColor, 0.2));
-    group.style.setProperty("--player-tint-border", hexToRgba(speakerColor, 0.62));
+    if (isTeammate) {
+      group.classList.add("tinted");
+      group.style.setProperty("--player-tint-bg", "rgba(200,40,40,0.18)");
+      group.style.setProperty("--player-tint-border", "rgba(220,60,60,0.65)");
+    } else {
+      const speakerColor = colorHexFromPlayerName(message.player);
+      group.classList.add("tinted");
+      group.style.setProperty("--player-tint-bg", hexToRgba(speakerColor, 0.2));
+      group.style.setProperty("--player-tint-border", hexToRgba(speakerColor, 0.62));
+    }
   }
 
   const speaker = document.createElement("div");
   speaker.className = "speaker";
-  speaker.textContent = message.player;
+  speaker.textContent = isTeammate ? `${message.player} [IMPOSTOR]` : message.player;
   group.appendChild(speaker);
 
   const msgEl = document.createElement("div");
@@ -1296,22 +1383,156 @@ function applyProgressBar(fillEl, textEl, progress) {
 
 function updateTaskProgress(current) {
   const progress = (current && current.task_progress) || {};
+  const isImpostor = String(current && current.human_player_identity || "").toLowerCase().includes("impostor");
   applyProgressBar(humanTaskProgressFillEl, humanTaskProgressTextEl, progress.human || {});
-  applyProgressBar(globalTaskProgressFillEl, globalTaskProgressTextEl, progress.global || {});
+  if (humanTaskBarGroupEl) humanTaskBarGroupEl.classList.toggle("hidden", isImpostor);
+  if (globalTaskBarGroupEl) globalTaskBarGroupEl.classList.toggle("hidden", !isImpostor);
+  if (isImpostor) {
+    applyProgressBar(globalTaskProgressFillEl, globalTaskProgressTextEl, progress.global || {});
+  }
 }
 
 function resetTaskProgress() {
   if (humanTaskProgressFillEl) {
     humanTaskProgressFillEl.style.width = "0%";
   }
-  if (globalTaskProgressFillEl) {
-    globalTaskProgressFillEl.style.width = "0%";
-  }
   if (humanTaskProgressTextEl) {
     humanTaskProgressTextEl.textContent = "-";
   }
-  if (globalTaskProgressTextEl) {
-    globalTaskProgressTextEl.textContent = "-";
+  if (humanTasksListEl) {
+    humanTasksListEl.textContent = "-";
+  }
+  if (impostorPanelEl) {
+    impostorPanelEl.classList.add("hidden");
+  }
+  if (killCooldownValueEl) {
+    killCooldownValueEl.textContent = "-";
+    killCooldownValueEl.classList.remove("ready");
+  }
+}
+
+const seenMonitorResults = new Set();
+
+function parseMonitorPlayers(raw) {
+  const names = [];
+  const re = /\(([^)]+)\):/g;
+  let m;
+  while ((m = re.exec(raw)) !== null) {
+    const name = m[1].trim().replace(/^Player\s+\d+:\s*/i, "");
+    if (name) names.push(name);
+  }
+  return names;
+}
+
+function updateMonitorResults(current) {
+  if (!monitorFeedEl) return;
+  const results = Array.isArray(current.monitor_results) ? current.monitor_results : [];
+  if (results.length === 0) return;
+  let addedNew = false;
+  results.forEach((raw) => {
+    if (seenMonitorResults.has(raw)) return;
+    seenMonitorResults.add(raw);
+    addedNew = true;
+    if (monitorFeedEl.textContent.includes("No monitor results")) {
+      monitorFeedEl.textContent = "";
+    }
+    const card = document.createElement("div");
+    card.className = "monitor-result";
+
+    const loc = raw.match(/Location:\s*([^,}]+)/i);
+    const hdr = document.createElement("div");
+    hdr.className = "monitor-result-header";
+    hdr.textContent = loc ? `Camera: ${loc[1].trim()}` : "Monitor Result";
+    card.appendChild(hdr);
+
+    const body = document.createElement("div");
+    body.className = "monitor-result-body";
+    const players = parseMonitorPlayers(raw);
+    body.textContent = players.length > 0 ? players.join(", ") : "No one observed.";
+    card.appendChild(body);
+    monitorFeedEl.appendChild(card);
+  });
+  if (addedNew) {
+    setActiveMapTab("monitor");
+    monitorFeedEl.scrollTop = monitorFeedEl.scrollHeight;
+  }
+}
+
+function updateHumanTasks(current) {
+  if (!humanTasksListEl) return;
+  const isImpostor = String(current && current.human_player_identity || "").toLowerCase().includes("impostor");
+  const panel = document.getElementById("crewmate-tasks-panel");
+  if (panel) panel.classList.toggle("hidden", isImpostor);
+  const tasks = current.human_tasks;
+  if (!tasks || !tasks.length) {
+    humanTasksListEl.textContent = "-";
+    return;
+  }
+  let html = "";
+  for (let i = 0; i < tasks.length; i++) {
+    const t = tasks[i];
+    const doneCls = t.is_done ? " done" : "";
+    const typeBadge = t.task_type ? ` [${t.task_type}]` : "";
+    html += `<div class="human-task-row${doneCls}">`;
+    html += `<span class="human-task-name">${t.name}${typeBadge}</span>`;
+    html += `<span class="human-task-loc">${t.location}</span>`;
+    html += `</div>`;
+  }
+  humanTasksListEl.innerHTML = html;
+}
+
+function updateCrewmateTasks(current) {
+  if (!crewmateTasksListEl) {
+    return;
+  }
+  const tasks = current.crewmate_tasks;
+  if (!tasks || !tasks.length) {
+    crewmateTasksListEl.textContent = "-";
+    return;
+  }
+  let html = "";
+  for (let i = 0; i < tasks.length; i++) {
+    const entry = tasks[i];
+    const rawName = String(entry.name || "");
+    const shortName = rawName.replace(/^Player\s+\d+:\s*/i, "");
+    const label = entry.is_self ? shortName + " (you)" : shortName;
+    const remaining = Number(entry.remaining) || 0;
+    const total = Number(entry.total) || 0;
+    const countText = remaining === 0 ? "Done" : remaining + "/" + total + " left";
+    const selfCls = entry.is_self ? " is-self" : "";
+    const doneCls = remaining === 0 ? " done" : "";
+    const safeName = rawName.replace(/"/g, "&quot;");
+    html += `<div class="crewmate-task-row${selfCls}">`;
+    html += `<span class="crewmate-task-name" title="${safeName}">${label}</span>`;
+    html += `<span class="crewmate-task-count${doneCls}">${countText}</span>`;
+    html += `</div>`;
+  }
+  crewmateTasksListEl.innerHTML = html;
+}
+
+function updateKillCooldown(current) {
+  if (!impostorPanelEl || !killCooldownValueEl) {
+    return;
+  }
+  const identity = String(current.human_player_identity || "").toLowerCase();
+  if (!identity.includes("impostor")) {
+    impostorPanelEl.classList.add("hidden");
+    return;
+  }
+  impostorPanelEl.classList.remove("hidden");
+  const cooldown = current.kill_cooldown;
+  if (cooldown === null || cooldown === undefined) {
+    killCooldownValueEl.textContent = "-";
+    killCooldownValueEl.classList.remove("ready");
+    return;
+  }
+  const val = Number(cooldown);
+  if (val === 0) {
+    killCooldownValueEl.textContent = "READY";
+    killCooldownValueEl.classList.add("ready");
+  } else {
+    killCooldownValueEl.textContent = `${val} turn${val === 1 ? "" : "s"}`;
+    killCooldownValueEl.classList.remove("ready");
   }
 }
 
@@ -1322,6 +1543,14 @@ function renderState(current) {
     Boolean(current && current.is_human_turn) &&
     !(previousState && previousState.is_human_turn);
 
+  // Track impostor teammates for red highlighting
+  const teammates = Array.isArray(current.human_impostor_teammates)
+    ? current.human_impostor_teammates
+    : [];
+  teammates.forEach((name) => {
+    if (name) knownImpostorTeammates.add(String(name));
+  });
+
   updateMap(previousState, current);
   updateStatus(previousState, current);
   updateRoleBanner(current);
@@ -1329,6 +1558,9 @@ function renderState(current) {
   updateSidebar(previousState, current);
   updateMeetingPanel(previousState, current);
   updateTaskProgress(current);
+  updateMonitorResults(current);
+  updateHumanTasks(current);
+  updateKillCooldown(current);
   updateTaskFeed(previousState, current);
   updateLog(previousState, current);
   if (becameHumanTurn && String(current.status || "") === "running") {
@@ -1339,10 +1571,14 @@ function renderState(current) {
     const wasRunning = previousState && String(previousState.status || "") === "running";
     if (wasRunning) {
       playSfx("game-over");
+      showGameOverModal(current);
+    } else if (!previousState && current.winner != null) {
+      showGameOverModal(current);
     }
     stopPolling();
     hideSpeechInput();
     setActionButtonsEnabled(false);
+    setGameActive(false);
     waitingMessageEl.textContent = "Game finished.";
     appendStatusLine(
       `Game ${gameId} finished. Winner: ${current.winner ?? "n/a"} | Reason: ${current.winner_reason ?? "n/a"}`
@@ -1356,10 +1592,11 @@ async function createGame() {
   appendStatusLine("Creating game...");
 
   try {
+    const selectedRole = roleSelectEl ? roleSelectEl.value : "random";
     const response = await fetchJson(apiUrl("/create_game"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ human_role: selectedRole === "random" ? null : selectedRole }),
     });
 
     if (typeof response.game_id !== "number") {
@@ -1367,6 +1604,9 @@ async function createGame() {
     }
 
     gameId = response.game_id;
+    setGameActive(true);
+    const confirmedRole = String(response.human_role || "random");
+    if (roleSelectEl) roleSelectEl.value = confirmedRole === "random" ? "random" : confirmedRole;
     previousState = null;
     consecutivePollErrors = 0;
     previousPhase = null;
@@ -1375,6 +1615,9 @@ async function createGame() {
     roleBannerEl.classList.add("hidden");
     roleBannerEl.classList.remove("crewmate", "impostor");
     roleBannerEl.textContent = "";
+    gameOverModalShown = false;
+    if (gameOverModalEl) gameOverModalEl.classList.add("hidden");
+    knownImpostorTeammates.clear();
     seenMeetingMessages.clear();
     seenVisibleLogKeys.clear();
     hiddenAliasByName.clear();
@@ -1385,11 +1628,16 @@ async function createGame() {
     initMapSkeleton();
     meetingFeed.innerHTML = "";
     seenTaskEvents.clear();
+    seenMonitorResults.clear();
     taskFeed.textContent = "No task actions yet.";
+    if (monitorFeedEl) monitorFeedEl.textContent = "No monitor results yet. Go to Security and use VIEW MONITOR.";
     resetTaskProgress();
     latestLogEl.textContent = "No visible events yet.";
     missionBriefEl.textContent = "No mission briefing captured yet.";
     missionBriefCaptured = false;
+    if (missionBriefPanelEl) {
+      missionBriefPanelEl.classList.add("hidden");
+    }
     appendStatusLine(`Game created (game_id=${gameId}). Polling state...`);
     startPollingNow();
   } catch (error) {
@@ -1470,6 +1718,17 @@ async function submitAction(actionIndex, speechText = "", monitorRoom = "") {
   }
 }
 
+if (gameOverCloseBtn) {
+  gameOverCloseBtn.addEventListener("click", () => {
+    if (gameOverModalEl) gameOverModalEl.classList.add("hidden");
+  });
+}
+if (gameOverModalEl) {
+  gameOverModalEl.querySelector(".game-over-backdrop")?.addEventListener("click", () => {
+    gameOverModalEl.classList.add("hidden");
+  });
+}
+
 createGameBtn.addEventListener("click", createGame);
 if (soundToggleBtn) {
   soundToggleBtn.addEventListener("click", () => {
@@ -1489,8 +1748,9 @@ if (soundVolumeEl) {
   });
 }
 tabLiveLogsBtn.addEventListener("click", () => setActiveJournalTab("live-logs"));
-tabMissionBriefBtn.addEventListener("click", () => setActiveJournalTab("mission-brief"));
 tabNotesBtn.addEventListener("click", () => setActiveJournalTab("notes"));
+if (tabMapBriefBtn) tabMapBriefBtn.addEventListener("click", () => setActiveMapTab("brief"));
+if (tabMapMonitorBtn) tabMapMonitorBtn.addEventListener("click", () => setActiveMapTab("monitor"));
 notesBoxEl.addEventListener("input", () => {
   window.localStorage.setItem(PLAYER_NOTES_STORAGE_KEY, notesBoxEl.value);
 });
